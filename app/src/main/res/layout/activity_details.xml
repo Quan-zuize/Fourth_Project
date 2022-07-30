@@ -128,7 +128,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"
-        android:background="@drawable/rounded_bg"
+        android:background="@drawable/round_button"
         android:backgroundTint="@color/peach"
         android:padding="18px"
         android:text="Add to cart"

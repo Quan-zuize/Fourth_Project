@@ -17,24 +17,29 @@
         <entry key="..\:/Project_4/app/src/main/res/drawable/ice_cream.xml" value="0.2505" />
         <entry key="..\:/Project_4/app/src/main/res/drawable/icecream.xml" value="0.2505" />
         <entry key="..\:/Project_4/app/src/main/res/drawable/noodles.xml" value="0.2505" />
+        <entry key="..\:/Project_4/app/src/main/res/drawable/round_button.xml" value="0.2465" />
         <entry key="..\:/Project_4/app/src/main/res/drawable/round_corners.xml" value="0.2295" />
+        <entry key="..\:/Project_4/app/src/main/res/drawable/rounded_bg.xml" value="0.2465" />
         <entry key="..\:/Project_4/app/src/main/res/drawable/search_bg.xml" value="0.2475" />
         <entry key="..\:/Project_4/app/src/main/res/drawable/side_nav_bar.xml" value="0.2475" />
         <entry key="..\:/Project_4/app/src/main/res/layout/activity_details.xml" value="0.264" />
         <entry key="..\:/Project_4/app/src/main/res/layout/activity_home.xml" value="0.25416666666666665" />
         <entry key="..\:/Project_4/app/src/main/res/layout/activity_intro.xml" value="0.264" />
+        <entry key="..\:/Project_4/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/Project_4/app/src/main/res/layout/activity_main.xml" value="0.23859649122807017" />
         <entry key="..\:/Project_4/app/src/main/res/layout/activity_main2.xml" value="0.25416666666666665" />
+        <entry key="..\:/Project_4/app/src/main/res/layout/activity_reset_password.xml" value="0.25416666666666665" />
+        <entry key="..\:/Project_4/app/src/main/res/layout/activity_sign_up.xml" value="0.264" />
         <entry key="..\:/Project_4/app/src/main/res/layout/activity_store_dashboard.xml" value="0.25416666666666665" />
         <entry key="..\:/Project_4/app/src/main/res/layout/content_home.xml" value="0.25416666666666665" />
         <entry key="..\:/Project_4/app/src/main/res/layout/food_row_item.xml" value="0.4" />
-        <entry key="..\:/Project_4/app/src/main/res/layout/fragment_cart.xml" value="0.25416666666666665" />
+        <entry key="..\:/Project_4/app/src/main/res/layout/fragment_cart.xml" value="0.264" />
         <entry key="..\:/Project_4/app/src/main/res/layout/fragment_daily.xml" value="0.25416666666666665" />
         <entry key="..\:/Project_4/app/src/main/res/layout/fragment_first.xml" value="0.25416666666666665" />
         <entry key="..\:/Project_4/app/src/main/res/layout/fragment_home.xml" value="0.25416666666666665" />
         <entry key="..\:/Project_4/app/src/main/res/layout/fragment_notification.xml" value="0.25416666666666665" />
-        <entry key="..\:/Project_4/app/src/main/res/layout/fragment_order.xml" value="0.25416666666666665" />
-        <entry key="..\:/Project_4/app/src/main/res/layout/fragment_profile.xml" value="0.25416666666666665" />
+        <entry key="..\:/Project_4/app/src/main/res/layout/fragment_order.xml" value="0.2116788321167883" />
+        <entry key="..\:/Project_4/app/src/main/res/layout/fragment_profile.xml" value="0.2116788321167883" />
         <entry key="..\:/Project_4/app/src/main/res/layout/fragment_second.xml" value="0.25416666666666665" />
         <entry key="..\:/Project_4/app/src/main/res/layout/fragment_store.xml" value="0.264" />
         <entry key="..\:/Project_4/app/src/main/res/layout/home_fragment.xml" value="0.25416666666666665" />

@@ -9,6 +9,12 @@ public class Buyer implements Serializable {
     String gmail;
     String phone;
 
+    public Buyer(String name, String gmail, String phone) {
+        this.name = name;
+        this.gmail = gmail;
+        this.phone = phone;
+    }
+
     public Buyer() {
     }
 
