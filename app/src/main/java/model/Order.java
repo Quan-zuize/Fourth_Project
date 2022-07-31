@@ -15,8 +15,7 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(int order_id, String buyer_name, Double total, int site_id, Date timeOrder, Date timeTaken) {
-        this.order_id = order_id;
+    public Order(String buyer_name, Double total, int site_id, Date timeOrder, Date timeTaken) {
         this.buyer_name = buyer_name;
         this.total = total;
         this.status = "Pending";

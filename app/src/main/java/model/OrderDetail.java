@@ -7,11 +7,17 @@ public class OrderDetail implements Serializable {
     int orderId;
     int menuId;
     int quantity;
-    float price;
+    double price;
 
-    public OrderDetail(int detailId, int orderId, int menuId, int quantity, float price) {
+    public OrderDetail(int detailId, int orderId, int menuId, int quantity, double price) {
         this.detailId = detailId;
         this.orderId = orderId;
+        this.menuId = menuId;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
+    public OrderDetail(int menuId, int quantity, double price) {
         this.menuId = menuId;
         this.quantity = quantity;
         this.price = price;
@@ -52,7 +58,7 @@ public class OrderDetail implements Serializable {
         this.quantity = quantity;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 

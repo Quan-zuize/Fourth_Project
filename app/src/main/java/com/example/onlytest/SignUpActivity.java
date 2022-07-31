@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +35,9 @@ public class SignUpActivity extends AppCompatActivity {
     TextView registerBtn;
     TextView forgetBtn;
 
+//    RadioButton radioButtonRe;
+//    RadioGroup radioGroupRe;
+
     FirebaseAuth auth;
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://shopdemo-8c277-default-rtdb.firebaseio.com/");
@@ -51,6 +56,11 @@ public class SignUpActivity extends AppCompatActivity {
         registerBtn = findViewById(R.id.sign_up_button);
         loginNowBtn = findViewById(R.id.sign_in_button);
         forgetBtn = findViewById(R.id.btn_reset_password);
+        
+//        int radioId =  radioGroupRe.getCheckedRadioButtonId();
+//        radioButtonRe = findViewById(radioId);
+//
+//        radioGroupRe = findViewById(R.id.type_radio_group_register);
 
         auth = FirebaseAuth.getInstance();
 
@@ -73,6 +83,7 @@ public class SignUpActivity extends AppCompatActivity {
         String phone = this.phone.getText().toString();
         String pass = password.getText().toString();
         String conPass = this.conPassword.getText().toString();
+//        int type = radioGroupRe.getCheckedRadioButtonId();
         if (fullname.isEmpty()) {
             this.fullname.setError("Full Name is required !");
             this.fullname.requestFocus();
@@ -98,7 +109,7 @@ public class SignUpActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Toast.makeText(SignUpActivity.this, "User Registered Successfully ", Toast.LENGTH_SHORT).show();
                         //insert to db
-                        User userObject = new User(email, phone, fullname);
+                        User userObject = new User(email, fullname );
                         databaseReference.child("Users").child(phone).setValue(userObject);
                         startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                     } else {

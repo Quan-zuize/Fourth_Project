@@ -7,6 +7,8 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +36,9 @@ public class LoginActivity extends AppCompatActivity {
     TextView registerNowBtn;
     TextView forgetBtn;
     Button loginBtn;
+    RadioButton userBtn;
+    RadioButton adminBtn;
+    RadioGroup radioGroup;
 
     FirebaseAuth auth;
 
@@ -47,6 +52,9 @@ public class LoginActivity extends AppCompatActivity {
         forgetBtn = findViewById(R.id.btn_reset_password);
         registerNowBtn = findViewById(R.id.btn_signup);
         loginBtn = findViewById(R.id.btn_login);
+        userBtn = findViewById(R.id.user_radio);
+        adminBtn = findViewById(R.id.admin_radio);
+        radioGroup = findViewById(R.id.type_radio_group);
 
         auth =FirebaseAuth.getInstance();
 

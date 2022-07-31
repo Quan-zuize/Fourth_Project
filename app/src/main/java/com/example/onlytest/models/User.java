@@ -4,11 +4,18 @@ public class User {
     private String email;
     private String phone;
     private String fullName;
+    private int Type;
 
-    public User(String email, String phone, String fullName) {
+
+    public User(String email, String fullName) {
         this.email = email;
-        this.phone = phone;
         this.fullName = fullName;
+    }
+
+    public User(String email, String fullName, int type) {
+        this.email = email;
+        this.fullName = fullName;
+        Type = type;
     }
 
     public String getEmail() {

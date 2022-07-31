@@ -9,7 +9,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.project_4.database.Database;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Menu;
+import model.OrderDetail;
 
 public class DetailsActivity extends AppCompatActivity {
     ImageButton minusImg, plusImg;
@@ -32,6 +35,8 @@ public class DetailsActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference menus;
+
+    Menu currentFood;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +55,18 @@ public class DetailsActivity extends AppCompatActivity {
         btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                new Database(getBaseContext()).addToCart(new OrderDetail(Integer.parseInt(foodId),quantity,currentFood.getPrice()
+                ));
+                Toast.makeText(DetailsActivity.this,"Added to Cart",Toast.LENGTH_SHORT).show();
             }
         });
 
         minusImg = findViewById(R.id.imageButton1);
         plusImg = findViewById(R.id.imageButton2);
         textView = findViewById(R.id.textView7);
+        quantity = Integer.parseInt(textView.getText().toString());
 
+        //Get Food Id from Intent
         if(getIntent() != null){
             foodId = getIntent().getStringExtra("id");
         }
@@ -70,12 +79,12 @@ public class DetailsActivity extends AppCompatActivity {
         menus.child(foodId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Menu menu = snapshot.getValue(Menu.class);
+                currentFood = snapshot.getValue(Menu.class);
 
-                assert menu != null;
-                Picasso.get().load(menu.getImage_src()).into(menuImg);
-                menuPrice.setText(String.valueOf(menu.getPrice()));
-                menuName.setText(menu.getTitle());
+                assert currentFood != null;
+                Picasso.get().load(currentFood.getImage_src()).into(menuImg);
+                menuPrice.setText(String.valueOf(currentFood.getPrice()));
+                menuName.setText(currentFood.getTitle());
             }
 
             @Override

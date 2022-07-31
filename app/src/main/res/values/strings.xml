@@ -36,5 +36,6 @@
     <string name="title_order">Đơn hàng</string>
     <string name="title_cart">Giỏ hàng</string>
     <string name="title_profile">Tôi</string>
-    <string name="total">Total:</string>
+    <string name="total">Tổng:</string>
+    <string name="order">Đặt hàng</string>
 </resources>

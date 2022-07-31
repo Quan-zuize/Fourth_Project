@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.WindowManager;
@@ -25,17 +24,18 @@ public class Store_dashboardActivity extends AppCompatActivity {
     private static String SHARED_PREF_NAME = "myPref";
     private static String KEY_PASS = "pass";
     private static String KEY_EMAIL = "email";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_store_dashboard);
 
         chipNavigationBar = findViewById(R.id.bottom_nav_menu);
-        chipNavigationBar.setItemSelected(R.id.navigation_shop,true);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new StoreFragment()).commit();
+        chipNavigationBar.setItemSelected(R.id.navigation_shop, true);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StoreFragment()).commit();
 
 
         bottomMenu();
@@ -51,32 +51,46 @@ public class Store_dashboardActivity extends AppCompatActivity {
                         fragment = new StoreFragment();
                         break;
                     case R.id.navigation_order:
-                        checkLogin();
-                        fragment = new CartFragment();
+                        if (!checkLogin()) {
+                            fragment = new OrderFragment();
+                        } else {
+                            redirect();
+                        }
                         break;
-                    case R.id.navigation_noti:
-                        checkLogin();
-                        fragment = new OrderFragment();
+                    case R.id.navigation_cart:
+//                        if (!checkLogin()) {
+                            fragment = new CartFragment();
+//                        } else {
+//                            redirect();
+//                        }
                         break;
                     case R.id.navigation_profile:
-                        checkLogin();
-                        fragment = new ProfileFragment();
+                        if (!checkLogin()) {
+                            fragment = new ProfileFragment();
+                        } else {
+                            redirect();
+                        }
                         break;
                 }
-                assert fragment != null;
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+
+                if (fragment != null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                }
             }
         });
     }
 
-    private void checkLogin(){
-        String pass = sharedPreferences.getString(KEY_PASS,null);
-        String email = sharedPreferences.getString(KEY_EMAIL,null);
-        if(pass == null || email  == null){
-            Intent intent = new Intent(Store_dashboardActivity.this, LoginActivity.class);
-            startActivity(intent);
-        }
+    private boolean checkLogin() {
+        String pass = sharedPreferences.getString(KEY_PASS, null);
+        String email = sharedPreferences.getString(KEY_EMAIL, null);
+        return (pass == null || email == null);
     }
+
+    private void redirect(){
+        BackHomeDialog backHomeDialog = new BackHomeDialog();
+        backHomeDialog.show(getSupportFragmentManager(), "back home dialog");
+    }
+
 //    private void setMenuRecycler(List<Menu> menuList) {
 //        foodRecycler = findViewById(R.id.food_recycler);
 //        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
@@ -86,7 +100,7 @@ public class Store_dashboardActivity extends AppCompatActivity {
 //    }
 
 
-    private void loadMenu(){
+    private void loadMenu() {
 
     }
 }

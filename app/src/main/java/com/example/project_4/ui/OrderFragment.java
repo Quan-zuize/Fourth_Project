@@ -29,8 +29,8 @@ public class OrderFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         //Firebase
-//        database = FirebaseDatabase.getInstance();
-//        requests = database.getReference("Menu");
+        database = FirebaseDatabase.getInstance();
+        requests = database.getReference("Order");
 
 //        loadOrders(new Buyer().getPhone());
         return inflater.inflate(R.layout.fragment_order, container, false);
