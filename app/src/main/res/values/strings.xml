@@ -35,7 +35,9 @@
     <string name="title_home">Home</string>
     <string name="title_order">Đơn hàng</string>
     <string name="title_cart">Giỏ hàng</string>
+    <string name="title_menu">Thực đơn</string>
     <string name="title_profile">Tôi</string>
+    <string name="title_manage">Quản lí</string>
     <string name="total">Tổng:</string>
     <string name="order">Đặt hàng</string>
 </resources>

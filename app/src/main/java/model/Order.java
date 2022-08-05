@@ -4,24 +4,23 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Order implements Serializable {
-    int order_id;
+    int order_id, status;
     String buyer_name;
     Double total;
-    String status;
-    int site_id;
+    String site_address;
     Date TimeOrder;
     Date TimeTaken;
 
     public Order() {
     }
 
-    public Order(String buyer_name, Double total, int site_id, Date timeOrder, Date timeTaken) {
+    public Order(int order_id, int status, String buyer_name, Double total, String site_address, Date timeOrder) {
+        this.order_id = order_id;
+        this.status = 1;
         this.buyer_name = buyer_name;
         this.total = total;
-        this.status = "Pending";
-        this.site_id = site_id;
+        this.site_address = site_address;
         TimeOrder = timeOrder;
-        TimeTaken = timeTaken;
     }
 
     public int getId() {
@@ -48,20 +47,28 @@ public class Order implements Serializable {
         this.total = total;
     }
 
-    public String getStatus() {
+    public int getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(int order_id) {
+        this.order_id = order_id;
+    }
+
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public int getSite_id() {
-        return site_id;
+    public String getSite_address() {
+        return site_address;
     }
 
-    public void setSite_id(int site_id) {
-        this.site_id = site_id;
+    public void setSite_address(String site_address) {
+        this.site_address = site_address;
     }
 
     public Date getTimeOrder() {

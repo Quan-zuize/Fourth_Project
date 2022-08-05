@@ -1,5 +1,6 @@
 package com.example.project_4.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,22 +16,27 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.project_4.Helper.ManagementCart;
 import com.example.project_4.Interface.ChangeNumberItemsListener;
+import com.example.project_4.LoginActivity;
 import com.example.project_4.R;
+import com.example.project_4.Store_dashboardActivity;
 import com.example.project_4.adapters.CartAdapter;
 import com.example.project_4.adapters.SpinnerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import model.Menu;
 import model.Order;
 import model.OrderDetail;
 import model.Site;
@@ -41,6 +47,7 @@ public class CartFragment extends Fragment {
     DatabaseReference requests;
 
     CartAdapter adapter;
+    ArrayList<Menu> menuList;
 
     TextView txt_empty, txt_totalFee, txt_note;
     ScrollView scrollView;
@@ -48,6 +55,7 @@ public class CartFragment extends Fragment {
     Spinner spinner;
     double total ;
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    int max_id ;
 
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
@@ -70,6 +78,27 @@ public class CartFragment extends Fragment {
         txt_note = root.findViewById(R.id.textNote);
         spinner = root.findViewById(R.id.site);
 
+        menuList = managementCart.getListCart();
+
+        Query query = requests.orderByKey().limitToLast(1);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    try {
+                        max_id = Integer.parseInt(childSnapshot.getKey());
+                    } catch (NumberFormatException ex) { // handle your exception
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         recyclerView = root.findViewById(R.id.listCart);
         recyclerView.setHasFixedSize(true);
 
@@ -82,24 +111,37 @@ public class CartFragment extends Fragment {
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //insert to firebase
-
                 ArrayList<OrderDetail> list = new ArrayList<>();
                 String note, status, buyer_name,site_address;
+                int order_id;
 
+                //insert to firebase
+
+                //id last order +1
+                order_id = max_id + 1;
                 LocalDateTime timeOrder = LocalDateTime.now();
-                status = "In Process";
+                status = "Đơn đã nhận";
                 site_address = spinner.getSelectedItem().toString();
                 note = txt_note.getText().toString();
 
-                //id last order +1
-                //requests.child(String.valueOf())
+//                requests.child(String.valueOf(order_id)).child("Buyer Name").setValue(buyer_name);
+                requests.child(String.valueOf(order_id)).child("Site Address").setValue(site_address);
+                requests.child(String.valueOf(order_id)).child("Total").setValue(total);
+                requests.child(String.valueOf(order_id)).child("Status").setValue(status);
+                requests.child(String.valueOf(order_id)).child("Note").setValue(note);
+                requests.child(String.valueOf(order_id)).child("Time Order").setValue(dtf.format(timeOrder));
 
-                //databaseReference.child("Users").child(phone).setValue(userObject);
+                for (int i = 1; i <= menuList.size(); i++) {
+                    requests.child(String.valueOf(order_id)).child("Detail").child(""+i).child("Title").setValue(menuList.get(i).getTitle());
+                    requests.child(String.valueOf(order_id)).child("Detail").child(""+i).child("Price").setValue(menuList.get(i).getPrice());
+                    requests.child(String.valueOf(order_id)).child("Detail").child(""+i).child("Quantity").setValue(menuList.get(i).getNumInCart());
+                    requests.child(String.valueOf(order_id)).child("Detail").child(""+i).child("Total").setValue(menuList.get(i).getPrice() * menuList.get(i).getNumInCart());
+                }
+
                 //Clear cart
-                //new ManagementCart(getContext()).cleanCart();
-
-                //finish();
+                new ManagementCart(getContext()).cleanCart();
+                Toast.makeText(CartFragment.this.getContext(), "Thank you for ordering", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(CartFragment.this.getContext(), OrderFragment.class));
             }
         });
 
@@ -111,7 +153,7 @@ public class CartFragment extends Fragment {
         linearLayoutManager = new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        adapter = new CartAdapter(managementCart.getListCart(), this.getContext(), new ChangeNumberItemsListener() {
+        adapter = new CartAdapter(menuList, this.getContext(), new ChangeNumberItemsListener() {
             @Override
             public void change() {
                 calculateCart();
@@ -119,7 +161,7 @@ public class CartFragment extends Fragment {
         });
 
         recyclerView.setAdapter(adapter);
-        if (managementCart.getListCart().isEmpty()) {
+        if (menuList.isEmpty()) {
             txt_empty.setVisibility(View.VISIBLE);
             scrollView.setVisibility(View.GONE);
         } else {

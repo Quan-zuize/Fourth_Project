@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navigation_shop"
+        android:icon="@drawable/ic_baseline_fastfood_24"
+        android:title="@string/title_home"
+        app:cnb_backgroundColor="@color/colorPrimary"/>
+
+    <item
+        android:id="@+id/navigation_order"
+        android:icon="@drawable/ic_baseline_receipt_24"
+        android:title="@string/title_order"
+        app:cnb_backgroundColor="@color/colorPrimary"/>
+
+    <item
+        android:id="@+id/navigation_cart"
+        android:icon="@drawable/ic_baseline_restaurant_menu_24"
+        android:title="@string/title_menu"
+        app:cnb_backgroundColor="@color/colorPrimary"/>
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_person_white_24"
+        android:title="@string/title_manage"
+        app:cnb_backgroundColor="@color/colorPrimary"/>
+</menu>

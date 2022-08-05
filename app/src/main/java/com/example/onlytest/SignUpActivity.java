@@ -20,8 +20,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -35,12 +39,14 @@ public class SignUpActivity extends AppCompatActivity {
     TextView registerBtn;
     TextView forgetBtn;
 
-//    RadioButton radioButtonRe;
-//    RadioGroup radioGroupRe;
 
     FirebaseAuth auth;
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://shopdemo-8c277-default-rtdb.firebaseio.com/");
+
+    DatabaseReference table_users = FirebaseDatabase.getInstance().getReference("Users");
+
+    DataSnapshot dataSnapshot;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,11 +62,7 @@ public class SignUpActivity extends AppCompatActivity {
         registerBtn = findViewById(R.id.sign_up_button);
         loginNowBtn = findViewById(R.id.sign_in_button);
         forgetBtn = findViewById(R.id.btn_reset_password);
-        
-//        int radioId =  radioGroupRe.getCheckedRadioButtonId();
-//        radioButtonRe = findViewById(radioId);
-//
-//        radioGroupRe = findViewById(R.id.type_radio_group_register);
+
 
         auth = FirebaseAuth.getInstance();
 
@@ -83,7 +85,7 @@ public class SignUpActivity extends AppCompatActivity {
         String phone = this.phone.getText().toString();
         String pass = password.getText().toString();
         String conPass = this.conPassword.getText().toString();
-//        int type = radioGroupRe.getCheckedRadioButtonId();
+        String type = "admin";
         if (fullname.isEmpty()) {
             this.fullname.setError("Full Name is required !");
             this.fullname.requestFocus();
@@ -109,8 +111,9 @@ public class SignUpActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Toast.makeText(SignUpActivity.this, "User Registered Successfully ", Toast.LENGTH_SHORT).show();
                         //insert to db
-                        User userObject = new User(email, fullname );
-                        databaseReference.child("Users").child(phone).setValue(userObject);
+                        User userObject = new User(email, phone, fullname, type );
+                        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                        databaseReference.child("Users").child(firebaseUser.getUid()).setValue(userObject);
                         startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                     } else {
                         Toast.makeText(SignUpActivity.this, "Registered Error :" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -118,5 +121,6 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             });
         }
+
     }
 }
