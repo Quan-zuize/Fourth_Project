@@ -3,35 +3,20 @@ package model;
 import java.io.Serializable;
 
 public class OrderDetail implements Serializable {
-    int detailId;
     int orderId;
-    int menuId;
+    int menu_title;
     int quantity;
     double price;
+    double total;
 
-    public OrderDetail(int detailId, int orderId, int menuId, int quantity, double price) {
-        this.detailId = detailId;
-        this.orderId = orderId;
-        this.menuId = menuId;
+    public OrderDetail(int menu_title, int quantity, double price) {
+        this.menu_title = menu_title;
         this.quantity = quantity;
         this.price = price;
-    }
-
-    public OrderDetail(int menuId, int quantity, double price) {
-        this.menuId = menuId;
-        this.quantity = quantity;
-        this.price = price;
+        this.total = price * quantity;
     }
 
     public OrderDetail() {
-    }
-
-    public int getDetailId() {
-        return detailId;
-    }
-
-    public void setDetailId(int detailId) {
-        this.detailId = detailId;
     }
 
     public int getOrderId() {
@@ -42,12 +27,12 @@ public class OrderDetail implements Serializable {
         this.orderId = orderId;
     }
 
-    public int getMenuId() {
-        return menuId;
+    public int getMenu_title() {
+        return menu_title;
     }
 
-    public void setMenuId(int menuId) {
-        this.menuId = menuId;
+    public void setMenu_title(int menu_title) {
+        this.menu_title = menu_title;
     }
 
     public int getQuantity() {
@@ -62,7 +47,15 @@ public class OrderDetail implements Serializable {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
     }
 }

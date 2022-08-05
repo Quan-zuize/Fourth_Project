@@ -27,7 +27,7 @@ public class Database extends SQLiteAssetHelper {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb= new SQLiteQueryBuilder();
 
-        String[] sqlSelect={"menuId,quantity,price"};
+        String[] sqlSelect={"ID,menuId,quantity,price"};
         String sqlTable = "OrderDetail";
 
         qb.setTables(sqlTable);
@@ -46,29 +46,21 @@ public class Database extends SQLiteAssetHelper {
         return result;
     }
 
-    public void addToCart(OrderDetail order){
-        SQLiteDatabase db = getReadableDatabase();
-        String query = String.format("INSERT INTO OrderDetail (menuId,quantity,price) VALUES(,'$s','$s','$s');",order.getMenuId(),order.getQuantity(),order.getPrice());
-        db.execSQL(query);
-    }
-
-    public void cleanCart(){
-        SQLiteDatabase db = getReadableDatabase();
-        String query = String.format("DELETE FROM OrderDetail");
-        db.execSQL(query);
-    }
-
-    public void plusNumberFood(List<OrderDetail> list, int position, ChangeNumberItemsListener changeNumberItemsListener){
-        list.get(position).setQuantity(list.get(position).getQuantity() + 1);
-        changeNumberItemsListener.change();
-    }
-
-    public void minusNumberFood(List<OrderDetail> list, int position, ChangeNumberItemsListener changeNumberItemsListener){
-        if (list.get(position).getQuantity() == 1) {
-            list.remove(position);
-        }else{
-            list.get(position).setQuantity(list.get(position).getQuantity() - 1);
-        }
-        changeNumberItemsListener.change();
-    }
+//    public void addToCart(OrderDetail order){
+//        SQLiteDatabase db = getReadableDatabase();
+//        String query = String.format("INSERT INTO OrderDetail (menuId,quantity,price) VALUES(,'$s','$s','$s');",order.getMenuId(),order.getQuantity(),order.getPrice());
+//        db.execSQL(query);
+//    }
+//
+//    public void cleanCart(){
+//        SQLiteDatabase db = getReadableDatabase();
+//        String query = String.format("DELETE FROM OrderDetail");
+//        db.execSQL(query);
+//    }
+//
+//    public void updateCart(OrderDetail od){
+//        SQLiteDatabase db = getReadableDatabase();
+//        String query = String.format("UPDATE OrderDetail SET quantity = %s WHERE ID = %d",od.getQuantity(),od.getDetailId());
+//        db.execSQL(query);
+//    }
 }

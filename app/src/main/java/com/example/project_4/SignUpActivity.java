@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import model.Buyer;
+import model.User;
 
 public class SignUpActivity extends AppCompatActivity {
     EditText fullname, email, phone, password, conPassword;
@@ -82,7 +82,7 @@ public class SignUpActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Toast.makeText(SignUpActivity.this, "User Registered Successfully ", Toast.LENGTH_SHORT).show();
                         //insert to db
-                        Buyer userObject = new Buyer(fullname, email, phone);
+                        User userObject = new User(fullname, email, phone);
                         databaseReference.child("Users").child(phone).setValue(userObject);
                         startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                     } else {

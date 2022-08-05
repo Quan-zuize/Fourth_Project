@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Project_4/app/src/main/res/drawable-v24/pot_steam.xml" value="0.2595" />
         <entry key="..\:/Project_4/app/src/main/res/drawable/beer_outline.xml" value="0.2505" />
         <entry key="..\:/Project_4/app/src/main/res/drawable/bowl_mix_outline.xml" value="0.2505" />
         <entry key="..\:/Project_4/app/src/main/res/drawable/ic_baseline_fastfood_24.xml" value="0.2505" />
@@ -17,6 +18,7 @@
         <entry key="..\:/Project_4/app/src/main/res/drawable/ice_cream.xml" value="0.2505" />
         <entry key="..\:/Project_4/app/src/main/res/drawable/icecream.xml" value="0.2505" />
         <entry key="..\:/Project_4/app/src/main/res/drawable/noodles.xml" value="0.2505" />
+        <entry key="..\:/Project_4/app/src/main/res/drawable/pot_steam.xml" value="0.2595" />
         <entry key="..\:/Project_4/app/src/main/res/drawable/round_button.xml" value="0.2465" />
         <entry key="..\:/Project_4/app/src/main/res/drawable/round_corners.xml" value="0.2295" />
         <entry key="..\:/Project_4/app/src/main/res/drawable/rounded_bg.xml" value="0.2465" />

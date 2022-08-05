@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.project_4.Helper.ManagementCart;
 import com.example.project_4.Interface.ChangeNumberItemsListener;
 import com.example.project_4.R;
 import com.example.project_4.Viewholder.CartViewHolder;
@@ -17,33 +18,33 @@ import com.example.project_4.database.Database;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Menu;
 import model.OrderDetail;
 
 public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
-    private List<OrderDetail> listData = new ArrayList<>();
-    private Context context;
-    private ChangeNumberItemsListener changeNumberItemsListener;
+    ArrayList<Menu> listData;
+    ManagementCart managementCart;
+    ChangeNumberItemsListener changeNumberItemsListener;
 
-    Database database;
     double price;
 
     OrderDetail od;
 
-    public CartAdapter(List<OrderDetail> listData, Context context, ChangeNumberItemsListener changeNumberItemsListener) {
+    public CartAdapter(ArrayList<Menu> listData, Context context, ChangeNumberItemsListener changeNumberItemsListener) {
         this.listData = listData;
-        this.context = context;
+        this.managementCart = new ManagementCart(context);
         this.changeNumberItemsListener = changeNumberItemsListener;
     }
 
-    public CartAdapter(List<OrderDetail> listData, Context context) {
-        this.listData = listData;
-        this.context = context;
-    }
+//    public CartAdapter(List<Menu> listData, Context context) {
+//        this.listData = listData;
+//        this.context = context;
+//    }
 
     @NonNull
     @Override
     public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View itemView = inflater.inflate(R.layout.viewholder_cart, parent, false);
         return new CartViewHolder(itemView);
     }
@@ -52,14 +53,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
     public void onBindViewHolder(@NonNull CartViewHolder holder, @SuppressLint("RecyclerView") int position) {
         price = listData.get(position).getPrice();
         //how to retrieve from firebase :Đ
-        //holder.txt_order_name.setText(listData.get(position).getMenuId());
-        holder.txt_price_item.setText(String.valueOf(listData.get(position).getPrice()));
-        holder.num.setText(String.valueOf(listData.get(position).getQuantity()));
+        holder.txt_order_name.setText(listData.get(position).getTitle());
+        holder.txt_price_item.setText(String.valueOf(price*listData.get(position).getNumInCart()));
+        holder.num.setText(String.valueOf(listData.get(position).getNumInCart()));
 
         holder.plusItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                database.plusNumberFood(listData, position, new ChangeNumberItemsListener() {
+                managementCart.plusNumberFood(listData, position, new ChangeNumberItemsListener() {
                     @Override
                     public void change() {
                         notifyDataSetChanged();
@@ -72,7 +73,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
         holder.minusItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                database.minusNumberFood(listData, position, new ChangeNumberItemsListener() {
+                managementCart.minusNumberFood(listData, position, new ChangeNumberItemsListener() {
                     @Override
                     public void change() {
                         notifyDataSetChanged();

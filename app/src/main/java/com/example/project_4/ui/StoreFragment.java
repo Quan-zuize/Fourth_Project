@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.project_4.R;
-import com.example.project_4.adapters.StoreAdapter;
+import com.example.project_4.adapters.StoreVerticleAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,18 +22,19 @@ import java.util.List;
 import model.Menu;
 
 public class StoreFragment extends Fragment {
-    RecyclerView storeRec;
     List<Menu> menuList;
-    StoreAdapter storeAdapter;
+    StoreVerticleAdapter foodAdapter;
     EditText search;
     List<Menu> filterList = new ArrayList<>();
+
+    RecyclerView recyclerViewFood, recyclerViewDrink;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_store, container, false);
-        storeRec = root.findViewById(R.id.food_recycler);
+        recyclerViewFood = root.findViewById(R.id.food_recycler);
         search = root.findViewById(R.id.search_bar);
         menuList = new ArrayList<>();
 
@@ -52,19 +53,24 @@ public class StoreFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 filterList.clear();
                 if(s.toString().isEmpty()){
-                    storeRec.setAdapter(new StoreAdapter(getActivity(),menuList));
-                    storeAdapter.notifyDataSetChanged();
+                    recyclerViewFood.setAdapter(new StoreVerticleAdapter(getActivity(),menuList));
+                    foodAdapter.notifyDataSetChanged();
                 }else{
                     Filter(s.toString());
                 }
             }
         });
 
-        storeAdapter = new StoreAdapter(getActivity(),menuList);
-        storeRec.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
-        storeRec.setHasFixedSize(true);
-        storeRec.setNestedScrollingEnabled(false);
+        foodAdapter = new StoreVerticleAdapter(getActivity(),menuList);
+        setRecyclerViewFood();
         return root;
+    }
+
+    private void setRecyclerViewFood(){
+        recyclerViewFood.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
+        recyclerViewFood.setHasFixedSize(true);
+        recyclerViewFood.setNestedScrollingEnabled(false);
+        recyclerViewFood.setAdapter(foodAdapter);
     }
 
     private void Filter(String text) {
@@ -73,8 +79,8 @@ public class StoreFragment extends Fragment {
                 filterList.add(menu);
             }
         }
-        storeRec.setAdapter(new StoreAdapter(getActivity(),filterList));
-        storeAdapter.notifyDataSetChanged();
+        recyclerViewFood.setAdapter(new StoreVerticleAdapter(getActivity(),filterList));
+        foodAdapter.notifyDataSetChanged();
     }
 
 

@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-import com.example.project_4.adapters.StoreAdapter;
+import com.example.project_4.adapters.StoreVerticleAdapter;
 import com.example.project_4.ui.OrderFragment;
 import com.example.project_4.ui.CartFragment;
 import com.example.project_4.ui.ProfileFragment;
@@ -17,7 +17,7 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 public class Store_dashboardActivity extends AppCompatActivity {
     private ChipNavigationBar chipNavigationBar;
-    StoreAdapter storeAdapter;
+    StoreVerticleAdapter storeVerticleAdapter;
     RecyclerView foodRecycler;
 
     SharedPreferences sharedPreferences;

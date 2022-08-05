@@ -2,8 +2,9 @@ package com.example.project_4.ui;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +16,12 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import model.Buyer;
 import model.Order;
 
 public class OrderFragment extends Fragment {
+    public RecyclerView recyclerView;
+    public RecyclerView.LayoutManager layoutManager;
+
     FirebaseDatabase database;
     DatabaseReference requests;
 
@@ -28,12 +31,17 @@ public class OrderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View root = inflater.inflate(R.layout.fragment_order, container, false);
         //Firebase
         database = FirebaseDatabase.getInstance();
         requests = database.getReference("Order");
 
+        recyclerView = root.findViewById(R.id.listCart);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this.getContext());
+        recyclerView.setLayoutManager(layoutManager);
 //        loadOrders(new Buyer().getPhone());
-        return inflater.inflate(R.layout.fragment_order, container, false);
+        return root;
     }
 
 //    private void loadOrders(String phone) {
