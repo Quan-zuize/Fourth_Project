@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -79,7 +80,10 @@ public class CartFragment extends Fragment {
         spinner = root.findViewById(R.id.site_spinner);
 
         menuList = managementCart.getListCart();
+        changeView();
         loadListFood();
+        displaySite();
+        calculateCart();
 
         Query query = requests.orderByKey().limitToLast(1);
         query.addValueEventListener(new ValueEventListener() {
@@ -100,12 +104,7 @@ public class CartFragment extends Fragment {
             }
         });
 
-
-        displaySite();
-        calculateCart();
-
         btnOrder = root.findViewById(R.id.btnOrder);
-
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,6 +148,16 @@ public class CartFragment extends Fragment {
         return root;
     }
 
+    private void changeView(){
+        if (menuList.isEmpty()) {
+            txt_empty.setVisibility(View.VISIBLE);
+            scrollView.setVisibility(View.GONE);
+        } else {
+            txt_empty.setVisibility(View.GONE);
+            scrollView.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void loadListFood() {
         linearLayoutManager = new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -159,15 +168,9 @@ public class CartFragment extends Fragment {
                 calculateCart();
             }
         });
+        adapter.notifyDataSetChanged();
 
         recyclerView.setAdapter(adapter);
-        if (menuList.isEmpty()) {
-            txt_empty.setVisibility(View.VISIBLE);
-            scrollView.setVisibility(View.GONE);
-        } else {
-            txt_empty.setVisibility(View.GONE);
-            scrollView.setVisibility(View.VISIBLE);
-        }
     }
 
     private void calculateCart() {
@@ -200,5 +203,15 @@ public class CartFragment extends Fragment {
 
         final SpinnerAdapter spinnerAdapter = new SpinnerAdapter(this.getContext(), R.layout.item_site_selected, list);
         spinner.setAdapter(spinnerAdapter);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        deleteCart(item.getOrder());
+        return super.onContextItemSelected(item);
+    }
+
+    private void deleteCart(int order) {
+        managementCart.remove(order);
     }
 }

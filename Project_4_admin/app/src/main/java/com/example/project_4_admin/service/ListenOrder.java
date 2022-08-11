@@ -1,4 +1,4 @@
-package com.example.project_4.service;
+package com.example.project_4_admin.service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -12,15 +12,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import com.example.project_4.Common.Common;
-import com.example.project_4.R;
-import com.example.project_4.Store_dashboardActivity;
-import com.example.project_4.model.Order;
+import com.example.project_4_admin.Common.Common;
+import com.example.project_4_admin.R;
+import com.example.project_4_admin.Store_dashboardActivity;
+import com.example.project_4_admin.model.Order;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Random;
 
 public class ListenOrder extends Service implements ChildEventListener {
     FirebaseDatabase database;
@@ -50,7 +52,11 @@ public class ListenOrder extends Service implements ChildEventListener {
 
     @Override
     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+        Order order = snapshot.getValue(Order.class);
+        assert order != null;
+        if(order.getStatus() ==  1){
+            showNotification(snapshot.getKey(), order);
+        }
     }
 
     @Override
@@ -61,7 +67,7 @@ public class ListenOrder extends Service implements ChildEventListener {
 
     private void showNotification(String key, Order order) {
         Intent intent = new Intent(getBaseContext(), Store_dashboardActivity.class);
-        intent.putExtra("userId",order.getBuyer_id());
+        intent.putExtra("userName",order.getBuyer_name());
         PendingIntent contentIntent = PendingIntent.getActivity(getBaseContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext());
@@ -69,14 +75,15 @@ public class ListenOrder extends Service implements ChildEventListener {
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
                 .setTicker("Anya")
-                .setContentInfo("Your order was updated")
-                .setContentText("Order #"+key+" was updated status to "+ Common.convertCodeToStatus(order.getStatus()))
+                .setContentInfo("New Order")
+                .setContentText("You have new order #"+key)
                 .setContentIntent(contentIntent)
                 .setContentInfo("Info")
-                .setSmallIcon(R.mipmap.ic_launcher);
+                .setSmallIcon(R.drawable.ic_shopping_cart_white_24);
 
         NotificationManager notificationManager = (NotificationManager) getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1,builder.build());
+        int randomInt = new Random().nextInt(9999-1)+1;
+        notificationManager.notify(randomInt,builder.build());
     }
 
     @Override

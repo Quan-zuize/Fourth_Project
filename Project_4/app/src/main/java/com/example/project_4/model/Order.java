@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Order implements Serializable {
     int order_id, status;
-    String buyer_name;
+    String buyer_id, buyer_name;
     Double total;
     String site_address;
     Date TimeOrder;
@@ -14,8 +14,9 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(int order_id, int status, String buyer_name, Double total, String site_address, Date timeOrder) {
+    public Order(int order_id, String buyer_id, String buyer_name, Double total, String site_address, Date timeOrder) {
         this.order_id = order_id;
+        this.buyer_id = buyer_id;
         this.status = 1; //0: cancelled, 2:Processing, 3:Paid
         this.buyer_name = buyer_name;
         this.total = total;
@@ -29,6 +30,14 @@ public class Order implements Serializable {
 
     public void setId(int id) {
         this.order_id = order_id;
+    }
+
+    public String getBuyer_id() {
+        return buyer_id;
+    }
+
+    public void setBuyer_id(String buyer_id) {
+        this.buyer_id = buyer_id;
     }
 
     public String getBuyer_name() {

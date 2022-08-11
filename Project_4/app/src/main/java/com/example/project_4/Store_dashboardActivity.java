@@ -19,8 +19,6 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 public class Store_dashboardActivity extends AppCompatActivity {
     private ChipNavigationBar chipNavigationBar;
-    StoreHorizontalAdapter storeHorizontalAdapter;
-    RecyclerView foodRecycler;
 
     SharedPreferences sharedPreferences;
     private static String SHARED_PREF_NAME = "myPref";
@@ -31,7 +29,6 @@ public class Store_dashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_store_dashboard);
@@ -45,8 +42,8 @@ public class Store_dashboardActivity extends AppCompatActivity {
 
         }
         //Service
-//        Intent service = new Intent(Store_dashboardActivity.this, ListenOrder.class);
-//        startService(service);
+        Intent service = new Intent(Store_dashboardActivity.this, ListenOrder.class);
+        startService(service);
         bottomMenu();
     }
 
@@ -67,11 +64,11 @@ public class Store_dashboardActivity extends AppCompatActivity {
                         }
                         break;
                     case R.id.navigation_cart:
-//                        if (!checkLogin()) {
+                        if (!checkLogin()) {
                         fragment = new CartFragment();
-//                        } else {
-//                            redirect();
-//                        }
+                        } else {
+                            redirect();
+                        }
                         break;
                     case R.id.navigation_profile:
                         fragment = new ProfileFragment();
@@ -94,18 +91,5 @@ public class Store_dashboardActivity extends AppCompatActivity {
     private void redirect() {
         BackHomeDialog backHomeDialog = new BackHomeDialog();
         backHomeDialog.show(getSupportFragmentManager(), "back home dialog");
-    }
-
-//    private void setMenuRecycler(List<Menu> menuList) {
-//        foodRecycler = findViewById(R.id.food_recycler);
-//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-//        foodRecycler.setLayoutManager(layoutManager);
-//        storeAdapter = new StoreAdapter(this, menuList);
-//        foodRecycler.setAdapter(storeAdapter);
-//    }
-
-
-    private void loadMenu() {
-
     }
 }

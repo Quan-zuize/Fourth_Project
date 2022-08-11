@@ -3,12 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Project_4_admin/app/src/main/res/drawable/ic_shopping_cart_white_24.xml" value="0.2145" />
         <entry key="..\:/Project_4_admin/app/src/main/res/font/amita.xml" value="0.284375" />
+        <entry key="..\:/Project_4_admin/app/src/main/res/layout/activity_details.xml" value="0.25416666666666665" />
+        <entry key="..\:/Project_4_admin/app/src/main/res/layout/activity_intro.xml" value="0.25416666666666665" />
         <entry key="..\:/Project_4_admin/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
         <entry key="..\:/Project_4_admin/app/src/main/res/layout/activity_manager_dashboard.xml" value="0.25416666666666665" />
+        <entry key="..\:/Project_4_admin/app/src/main/res/layout/activity_menu_list.xml" value="0.25416666666666665" />
         <entry key="..\:/Project_4_admin/app/src/main/res/layout/activity_sign_up.xml" value="0.25416666666666665" />
         <entry key="..\:/Project_4_admin/app/src/main/res/layout/activity_store_dashboard.xml" value="0.25416666666666665" />
+        <entry key="..\:/Project_4_admin/app/src/main/res/layout/food_list_item.xml" value="0.25416666666666665" />
+        <entry key="..\:/Project_4_admin/app/src/main/res/layout/food_row_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Project_4_admin/app/src/main/res/layout/fragment_order_manager.xml" value="0.25416666666666665" />
+        <entry key="..\:/Project_4_admin/app/src/main/res/layout/fragment_store.xml" value="0.25416666666666665" />
         <entry key="..\:/Project_4_admin/app/src/main/res/layout/order_layout.xml" value="0.25416666666666665" />
         <entry key="..\:/Project_4_admin/app/src/main/res/layout/update_order_layout.xml" value="0.25416666666666665" />
         <entry key="..\:/Project_4_admin/app/src/main/res/menu/manager_navigation.xml" value="0.25416666666666665" />

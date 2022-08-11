@@ -27,7 +27,7 @@ public class ManagementCart {
         boolean existAlready = false;
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getMenu_id() == item.getMenu_id()) {
-                list.get(i).setNumInCart(list.get(i).getNumInCart()+item.getNumInCart());
+                list.get(i).setNumInCart(list.get(i).getNumInCart() + item.getNumInCart());
                 existAlready = true;
                 break;
             }
@@ -36,49 +36,57 @@ public class ManagementCart {
         if (!existAlready) {
             list.add(item);
         }
-        tinyDB.putListObject("CartList",list);
+        tinyDB.putListObject("CartList", list);
     }
 
     public ArrayList<Menu> getListCart() {
         return tinyDB.getListObject("CartList");
     }
 
-    public void plusNumberFood(ArrayList<Menu> list, int position, ChangeNumberItemsListener changeNumberItemsListener){
+    public void plusNumberFood(ArrayList<Menu> list, int position, ChangeNumberItemsListener changeNumberItemsListener) {
         list.get(position).setNumInCart(list.get(position).getNumInCart() + 1);
         tinyDB.putListObject("CartList", list);
         changeNumberItemsListener.change();
     }
 
-    public void minusNumberFood(ArrayList<Menu> list, int position, ChangeNumberItemsListener changeNumberItemsListener){
+    public void minusNumberFood(ArrayList<Menu> list, int position, ChangeNumberItemsListener changeNumberItemsListener) {
         if (list.get(position).getNumInCart() == 1) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext());
-            builder.setMessage("You want to remove this ?")
+            AlertDialog dialog = new AlertDialog.Builder(this.context)
+                    .setMessage("Do you want to remove this ?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
                             list.remove(position);
+                            tinyDB.putListObject("CartList", list);
+                            changeNumberItemsListener.change();
                         }
                     })
-                    .setNegativeButton("No", null);
-            builder.create();
-            builder.show();
-        }else{
+                    .setNegativeButton("No", null)
+                    .create();
+            dialog.show();
+        } else {
             list.get(position).setNumInCart(list.get(position).getNumInCart() - 1);
+            tinyDB.putListObject("CartList", list);
+            changeNumberItemsListener.change();
         }
-        tinyDB.putListObject("CartList", list);
-        changeNumberItemsListener.change();
     }
 
-    public Double getTotal(){
+    public Double getTotal() {
         ArrayList<Menu> list = getListCart();
         double total = 0;
-        for(Menu item: list){
+        for (Menu item : list) {
             total = total + (item.getPrice() * item.getNumInCart());
         }
-        return  total;
+        return total;
     }
 
-    public void cleanCart(){
+    public void remove(int position){
+        ArrayList<Menu> list = getListCart();
+        list.remove(position);
+    }
+
+    public void cleanCart() {
         tinyDB.clear();
     }
 }

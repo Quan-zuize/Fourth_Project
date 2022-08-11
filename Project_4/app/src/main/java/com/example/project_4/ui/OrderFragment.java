@@ -35,7 +35,7 @@ public class OrderFragment extends Fragment {
 
     SharedPreferences sharedPreferences;
     private static String SHARED_PREF_NAME = "myPref";
-    static String KEY_NAME = "name";
+    static String KEY_ID = "id";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,15 +52,14 @@ public class OrderFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         sharedPreferences = getContext().getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String user_name = sharedPreferences.getString(KEY_NAME, null);
+        String user_id = sharedPreferences.getString(KEY_ID, null);
 
-
-        loadOrders(user_name);
+        loadOrders(user_id);
         return root;
     }
 
-    private void loadOrders(String name) {
-        Query query = requests.orderByChild("Buyer Name").equalTo(name);
+    private void loadOrders(String id) {
+        Query query = requests.orderByChild("Buyer ID").equalTo(id);
 
         FirebaseRecyclerOptions<Order> options =
                 new FirebaseRecyclerOptions.Builder<Order>()

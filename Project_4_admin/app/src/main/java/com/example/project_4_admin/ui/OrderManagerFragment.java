@@ -69,6 +69,7 @@ public class OrderManagerFragment extends Fragment {
         site_id = sharedPreferences.getString(KEY_SITE, null);
         //load all Orders
         loadOrders(getSite_address());
+
         return root;
     }
 
@@ -142,7 +143,6 @@ public class OrderManagerFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
-
             }
         });
 
@@ -151,16 +151,14 @@ public class OrderManagerFragment extends Fragment {
 
     private String getSite_address() {
         DatabaseReference reference = database.getReference().child("Site");
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot data : snapshot.getChildren()) {
 //                    int site_id =  Integer.parseInt(data.getKey());
                     if (Objects.equals(data.getKey(), site_id)) {
                         site_address = data.child("address").getValue(String.class);
-                        break;
                     }
-//                    list.add(data.child("address").getValue(String.class));
                 }
                 adapter.notifyDataSetChanged();
             }

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.project_4_admin.service.SoundService;
 
 public class IntroActivity extends AppCompatActivity {
     private ImageView logo, appName, splashImg;
@@ -24,25 +25,25 @@ public class IntroActivity extends AppCompatActivity {
         splashImg = findViewById(R.id.imageView);
         lottieAnimationView = findViewById(R.id.animation);
 
-        MediaPlayer song = MediaPlayer.create(this, R.raw.anya_sound);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                song.start();
+                startService(new Intent(IntroActivity.this, SoundService.class));
             }
         }, 1000);
 
-        splashImg.animate().translationY(-3000).setDuration(2000).setStartDelay(1800);
-        logo.animate().translationY(2300).setDuration(2000).setStartDelay(1800);
-        appName.animate().translationY(2300).setDuration(2000).setStartDelay(1800);
-        lottieAnimationView.animate().translationY(2300).setDuration(2000).setStartDelay(1800);
+        splashImg.animate().translationY(-3000).setDuration(2000).setStartDelay(3500);
+        logo.animate().translationY(2300).setDuration(2000).setStartDelay(3500);
+        appName.animate().translationY(2300).setDuration(2000).setStartDelay(3500);
+        lottieAnimationView.animate().translationY(2300).setDuration(2000).setStartDelay(3500);
+
 
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(IntroActivity.this,Manager_dashboardActivity.class));
+                startActivity(new Intent(IntroActivity.this, Store_dashboardActivity.class));
             }
-        }, 2800);
+        }, 3500);
     }
 }

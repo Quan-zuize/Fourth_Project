@@ -1,5 +1,6 @@
 package com.example.project_4.Viewholder;
 
+import android.view.ContextMenu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -10,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_4.R;
 
-public class CartViewHolder extends RecyclerView.ViewHolder {
+public class CartViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener, View.OnCreateContextMenuListener {
     RecyclerView recyclerView;
     public TextView txt_order_name,txt_price_item, num ;
     public ImageView img_menu, plusItem, minusItem;
@@ -25,5 +26,16 @@ public class CartViewHolder extends RecyclerView.ViewHolder {
         num = itemView.findViewById(R.id.numberItemsTxt);
         minusItem = itemView.findViewById(R.id.minusCartBtn);
         plusItem = itemView.findViewById(R.id.plusCartBtn);
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        return false;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+        contextMenu.setHeaderTitle("Select Action");
+        contextMenu.add(0,0,getAdapterPosition(),"DELETE");
     }
 }
