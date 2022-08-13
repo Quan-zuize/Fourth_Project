@@ -2,6 +2,7 @@ package com.example.project_4.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,32 +14,32 @@ import com.bumptech.glide.Glide;
 import com.example.project_4.Helper.ManagementCart;
 import com.example.project_4.Interface.ChangeNumberItemsListener;
 import com.example.project_4.R;
+import com.example.project_4.Store_dashboardActivity;
 import com.example.project_4.Viewholder.CartViewHolder;
 
 import java.util.ArrayList;
 
 import com.example.project_4.model.Menu;
-import com.example.project_4.model.OrderDetail;
+import com.example.project_4.ui.CartFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
     ArrayList<Menu> listData;
     ManagementCart managementCart;
     ChangeNumberItemsListener changeNumberItemsListener;
+    private Context context;
+
+    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
     double price;
 
-    OrderDetail od;
-
     public CartAdapter(ArrayList<Menu> listData, Context context, ChangeNumberItemsListener changeNumberItemsListener) {
         this.listData = listData;
-        this.managementCart = new ManagementCart(context);
+        this.managementCart = new ManagementCart(context,firebaseUser.getUid());
         this.changeNumberItemsListener = changeNumberItemsListener;
+        this.context = context;
     }
-
-//    public CartAdapter(List<Menu> listData, Context context) {
-//        this.listData = listData;
-//        this.context = context;
-//    }
 
     @NonNull
     @Override
@@ -57,30 +58,26 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
         holder.txt_price_item.setText(String.format("%,.0f", price*listData.get(position).getNumInCart()));
         holder.num.setText(String.valueOf(listData.get(position).getNumInCart()));
 
-        holder.plusItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                managementCart.plusNumberFood(listData, position, new ChangeNumberItemsListener() {
-                    @Override
-                    public void change() {
-                        notifyDataSetChanged();
-                        changeNumberItemsListener.change();
-                    }
-                });
-            }
+        holder.plusItem.setOnClickListener((View view) -> {
+            managementCart.plusNumberFood(listData, position, () ->{
+                notifyDataSetChanged();
+                changeNumberItemsListener.change();
+                if(((Store_dashboardActivity) this.context) instanceof Store_dashboardActivity) {
+                    ((Store_dashboardActivity)((Store_dashboardActivity) this.context))
+                            .reloadFragment();
+                }
+            });
         });
 
-        holder.minusItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                managementCart.minusNumberFood(listData, position, new ChangeNumberItemsListener() {
-                    @Override
-                    public void change() {
-                        notifyDataSetChanged();
-                        changeNumberItemsListener.change();
-                    }
-                });
-            }
+        holder.minusItem.setOnClickListener((View view)->{
+            managementCart.minusNumberFood(listData, position, () ->{
+                notifyDataSetChanged();
+                changeNumberItemsListener.change();
+                if(((Store_dashboardActivity) this.context) instanceof Store_dashboardActivity) {
+                    ((Store_dashboardActivity)((Store_dashboardActivity) this.context))
+                            .reloadFragment();
+                }
+            });
         });
     }
 

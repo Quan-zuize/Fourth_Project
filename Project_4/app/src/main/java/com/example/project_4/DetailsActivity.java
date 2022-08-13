@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.project_4.Helper.ManagementCart;
 import com.example.project_4.ui.CartFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -30,6 +32,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference menus;
+    FirebaseUser firebaseUser;
 
     Menu currentFood;
     ManagementCart managementCart;
@@ -43,7 +46,8 @@ public class DetailsActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         menus = database.getReference("Menu");
 
-        managementCart = new ManagementCart(this);
+        String key = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        managementCart = new ManagementCart(this,key);
 
         menuImg = findViewById(R.id.menu_img);
         menuPrice = findViewById(R.id.menu_price);
@@ -54,7 +58,6 @@ public class DetailsActivity extends AppCompatActivity {
         minusImg = findViewById(R.id.imageButton1);
         plusImg = findViewById(R.id.imageButton2);
         textView = findViewById(R.id.numCart);
-        quantity = Integer.parseInt(textView.getText().toString());
 
         backImg = findViewById(R.id.imageView7);
         backImg.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +80,7 @@ public class DetailsActivity extends AppCompatActivity {
         btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                quantity = Integer.parseInt(textView.getText().toString());
                 currentFood.setNumInCart(quantity);
                 managementCart.insertFood(currentFood);
                 Toast.makeText(DetailsActivity.this, "Added to Cart", Toast.LENGTH_SHORT).show();

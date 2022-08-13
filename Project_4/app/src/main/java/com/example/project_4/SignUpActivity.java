@@ -107,7 +107,8 @@ public class SignUpActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(SignUpActivity.this, "User Registered Successfully ", Toast.LENGTH_SHORT).show();
                                     //insert to db
-                                    User userObject = new User(email, phone, fullname);
+                                    User userObject = new User(fullname, email, phone);
+                                    firebaseUser = auth.getCurrentUser();
                                     databaseReference.child("Users").child(firebaseUser.getUid()).setValue(userObject);
                                     startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                                 } else {

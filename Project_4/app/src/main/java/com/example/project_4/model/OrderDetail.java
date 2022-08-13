@@ -3,7 +3,6 @@ package com.example.project_4.model;
 import java.io.Serializable;
 
 public class OrderDetail implements Serializable {
-    int orderId;
     int menu_id;
     String menu_title;
     int quantity;
@@ -29,13 +28,13 @@ public class OrderDetail implements Serializable {
         this.menu_id = menu_id;
     }
 
-    public int getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
-    }
+//    public int getOrderId() {
+//        return orderId;
+//    }
+//
+//    public void setOrderId(int orderId) {
+//        this.orderId = orderId;
+//    }
 
     public String getMenu_title() {
         return menu_title;

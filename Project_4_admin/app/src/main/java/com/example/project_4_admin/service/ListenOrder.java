@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.example.project_4_admin.Common.Common;
+import com.example.project_4_admin.Manager_dashboardActivity;
 import com.example.project_4_admin.R;
 import com.example.project_4_admin.Store_dashboardActivity;
 import com.example.project_4_admin.model.Order;
@@ -66,7 +67,7 @@ public class ListenOrder extends Service implements ChildEventListener {
     }
 
     private void showNotification(String key, Order order) {
-        Intent intent = new Intent(getBaseContext(), Store_dashboardActivity.class);
+        Intent intent = new Intent(getBaseContext(), Manager_dashboardActivity.class);
         intent.putExtra("userName",order.getBuyer_name());
         PendingIntent contentIntent = PendingIntent.getActivity(getBaseContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 

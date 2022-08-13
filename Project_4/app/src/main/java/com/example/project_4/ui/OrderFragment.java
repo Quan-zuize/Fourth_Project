@@ -1,7 +1,5 @@
 package com.example.project_4.ui;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,13 +14,21 @@ import android.view.ViewGroup;
 import com.example.project_4.Common.Common;
 import com.example.project_4.R;
 import com.example.project_4.Viewholder.OrderViewHolder;
+
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import com.example.project_4.model.Order;
+import com.google.firebase.database.ValueEventListener;
+
+import java.time.format.DateTimeFormatter;
 
 public class OrderFragment extends Fragment {
     public RecyclerView recyclerView;
@@ -33,9 +39,9 @@ public class OrderFragment extends Fragment {
 
     FirebaseRecyclerAdapter<Order,OrderViewHolder> adapter;
 
-    SharedPreferences sharedPreferences;
-    private static String SHARED_PREF_NAME = "myPref";
-    static String KEY_ID = "id";
+    FirebaseUser user;
+
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,23 +54,22 @@ public class OrderFragment extends Fragment {
 
         recyclerView = root.findViewById(R.id.list_order);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this.getContext());
+        layoutManager = new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
 
-        sharedPreferences = getContext().getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String user_id = sharedPreferences.getString(KEY_ID, null);
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
-        loadOrders(user_id);
+        loadOrders(user.getUid());
         return root;
     }
 
     private void loadOrders(String id) {
         Query query = requests.orderByChild("Buyer ID").equalTo(id);
-
         FirebaseRecyclerOptions<Order> options =
                 new FirebaseRecyclerOptions.Builder<Order>()
                         .setQuery(query, Order.class)
                         .build();
+
 
         adapter = new FirebaseRecyclerAdapter<Order, OrderViewHolder>(options) {
             @NonNull
@@ -78,14 +83,28 @@ public class OrderFragment extends Fragment {
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull OrderViewHolder holder, int position, @NonNull Order model) {
-                holder.txtOrderId.setText(adapter.getRef(position).getKey());
+            protected void onBindViewHolder(@NonNull OrderViewHolder holder, int position, Order model) {
+                holder.txtOrderId.setText("#" + adapter.getRef(position).getKey());
                 holder.txtOrderStatus.setText(Common.convertCodeToStatus(model.getStatus()));
                 holder.txtSite.setText(model.getSite_address());
-                holder.txtTime.setText(model.getTimeOrder().toString());
+                //holder.txtTime.setText(dtf.format());
             }
         };
-        adapter.notifyDataSetChanged();
+        //options.getSnapshots()
         recyclerView.setAdapter(adapter);
+        adapter.startListening();
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 }

@@ -1,10 +1,13 @@
 package com.example.project_4.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,19 +15,16 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.project_4.Helper.ManagementCart;
 import com.example.project_4.Interface.ChangeNumberItemsListener;
 import com.example.project_4.R;
+import com.example.project_4.Store_dashboardActivity;
 import com.example.project_4.adapters.CartAdapter;
-import com.example.project_4.adapters.SpinnerAdapter;
-import com.example.project_4.model.Site;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,10 +35,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.example.project_4.model.Menu;
 import com.example.project_4.model.OrderDetail;
 
+import org.angmarch.views.NiceSpinner;
 
 public class CartFragment extends Fragment {
     FirebaseDatabase database;
@@ -50,27 +53,36 @@ public class CartFragment extends Fragment {
     TextView txt_empty, txt_totalFee, txt_note;
     ScrollView scrollView;
     Button btnOrder;
-    Spinner spinner;
+    NiceSpinner spinner;
     double total ;
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     int max_id ;
+    String buyer_id;
 
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
     ManagementCart managementCart;
 
+    SharedPreferences sharedPreferences;
+    private static String SHARED_PREF_NAME = "myPref";
+    private static String KEY_ID = "id";
+    private static String KEY_NAME = "name";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View root = inflater.inflate(R.layout.fragment_cart, container, false);
         recyclerView = root.findViewById(R.id.listCart);
         recyclerView.setHasFixedSize(true);
+        sharedPreferences = getContext().getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
+        buyer_id = sharedPreferences.getString(KEY_ID, null);
         //Firebase
         database = FirebaseDatabase.getInstance();
         requests = database.getReference("Order");
-        managementCart = new ManagementCart(this.getContext());
+        managementCart = new ManagementCart(this.getContext(),buyer_id);
 
         //Init View
         scrollView = root.findViewById(R.id.scrollView2);
@@ -108,26 +120,28 @@ public class CartFragment extends Fragment {
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String note, status, buyer_name,site_address;
-                int order_id;
+                String note, buyer_name,site_address;
+                int order_id, status;
 
                 //insert to firebase
 
                 //id last order +1
                 order_id = max_id + 1;
+                buyer_name = sharedPreferences.getString(KEY_NAME, null);
                 LocalDateTime timeOrder = LocalDateTime.now();
-                status = "Đơn đã nhận";
+                status = 1;
                 site_address = spinner.getSelectedItem().toString();
                 note = txt_note.getText().toString();
 
-//                requests.child(String.valueOf(order_id)).child("Buyer Name").setValue(buyer_name);
+                requests.child(String.valueOf(order_id)).child("Buyer ID").setValue(buyer_id);
+                requests.child(String.valueOf(order_id)).child("Buyer Name").setValue(buyer_name);
                 requests.child(String.valueOf(order_id)).child("Site Address").setValue(site_address);
                 requests.child(String.valueOf(order_id)).child("Total").setValue(total);
                 requests.child(String.valueOf(order_id)).child("Status").setValue(status);
                 requests.child(String.valueOf(order_id)).child("Note").setValue(note);
                 requests.child(String.valueOf(order_id)).child("Time Order").setValue(dtf.format(timeOrder));
 
-                for (int i = 1; i <= menuList.size(); i++) {
+                for (int i = 1; i < menuList.size(); i++) {
                     OrderDetail od = new OrderDetail();
                     od.setMenu_id(menuList.get(i).getMenu_id());
                     od.setMenu_title(menuList.get(i).getTitle());
@@ -138,9 +152,9 @@ public class CartFragment extends Fragment {
                 }
 
                 //Clear cart
-                new ManagementCart(getContext()).cleanCart();
-                Toast.makeText(CartFragment.this.getContext(), "Thank you for ordering", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(CartFragment.this.getContext(), OrderFragment.class));
+                managementCart.cleanCart();
+                Toast.makeText(getContext(), "Thank you for ordering.", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(CartFragment.this.getContext(), Store_dashboardActivity.class));
             }
         });
 
@@ -148,7 +162,7 @@ public class CartFragment extends Fragment {
         return root;
     }
 
-    private void changeView(){
+    public void changeView(){
         if (menuList.isEmpty()) {
             txt_empty.setVisibility(View.VISIBLE);
             scrollView.setVisibility(View.GONE);
@@ -169,7 +183,6 @@ public class CartFragment extends Fragment {
             }
         });
         adapter.notifyDataSetChanged();
-
         recyclerView.setAdapter(adapter);
     }
 
@@ -180,38 +193,38 @@ public class CartFragment extends Fragment {
     }
 
     private void displaySite() {
-        final ArrayList<Site> list = new ArrayList<>();
+        List<String> dataset = new LinkedList<>();
 
         DatabaseReference reference = database.getReference().child("Site");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-
                 for(DataSnapshot data : snapshot.getChildren()){
-//                    int site_id =  Integer.parseInt(data.getKey());
-                    Site site = new Site(Integer.parseInt(data.getKey()),data.child("Address").getValue().toString());
-                    list.add(site);
+                    dataset.add(data.child("Address").getValue().toString());
                 }
+                spinner.attachDataSource(dataset);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-
-        final SpinnerAdapter spinnerAdapter = new SpinnerAdapter(this.getContext(), R.layout.item_site_selected, list);
-        spinner.setAdapter(spinnerAdapter);
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        deleteCart(item.getOrder());
-        return super.onContextItemSelected(item);
-    }
-
-    private void deleteCart(int order) {
-        managementCart.remove(order);
+        menuList.remove(item.getOrder());
+        managementCart.cleanCart();
+        for(Menu menu : menuList){
+            managementCart.insertFood(menu);
+        }
+        //Refresh
+        loadListFood();
+        adapter.notifyDataSetChanged();
+        if(((Store_dashboardActivity) this.getContext()) instanceof Store_dashboardActivity) {
+            ((Store_dashboardActivity)((Store_dashboardActivity) this.getContext()))
+                    .reloadFragment();
+        }
+        return true;
     }
 }

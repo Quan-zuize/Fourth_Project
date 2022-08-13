@@ -23,32 +23,33 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.example.project_4.model.Menu;
 
 public class StoreFragment extends Fragment {
-    List<Menu> menuList;
-    StoreHorizontalAdapter foodAdapter;
+    List<Menu> recentAddList  = new ArrayList<>();
+    List<Menu> popularList = new ArrayList<>();
+
+    StoreHorizontalAdapter popularAdapter, recentAddAdapter ;
+
     EditText search;
     List<Menu> filterList = new ArrayList<>();
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference db = database.getReference("Menu");
 
-    RecyclerView recyclerViewFood, recyclerViewDrink, popularFood;
+    RecyclerView popularFood, recentAddFood;
     Button btn_rice, btn_hot_pot, btn_noodle_soup, btn_soup, btn_dessert, btn_fast_food, btn_combo, btn_drink;
 
-    Menu getMenu;
+    Menu getRecentAddMenu;
+    Menu getPopularMenu;
     String[] category;
-
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-    LocalDateTime now = LocalDateTime.now();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,7 +57,6 @@ public class StoreFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_store, container, false);
         search = root.findViewById(R.id.search_bar);
-        menuList = new ArrayList<>();
 
         btn_rice = root.findViewById(R.id.button_rice);
         btn_hot_pot = root.findViewById(R.id.button_hot_pot);
@@ -67,8 +67,8 @@ public class StoreFragment extends Fragment {
         btn_combo = root.findViewById(R.id.button_combo);
         btn_drink = root.findViewById(R.id.button_drink);
 
-        popularFood = root.findViewById(R.id.popularFood);
-        recyclerViewFood = root.findViewById(R.id.foods_recycler);
+        recentAddFood = root.findViewById(R.id.recentAddFood);
+        popularFood = root.findViewById(R.id.foods_recycler);
 
         Intent intent = new Intent(this.getContext(), MenuListActivity.class);
 
@@ -137,20 +137,86 @@ public class StoreFragment extends Fragment {
             }
         });
 
-        dtf.format(now);
+        ArrayList<String> categoryList = new ArrayList<>();
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                categoryList.clear();
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    int menu_id = Integer.parseInt(childSnapshot.getKey());
-                    String title = childSnapshot.child("Title").getValue(String.class);
                     String category = childSnapshot.child("Category").getValue(String.class);
-                    Double price = Double.valueOf(childSnapshot.child("Price").getValue(String.class));
-                    String img = childSnapshot.child("Image").getValue(String.class);
-                    String des = childSnapshot.child("Description").getValue(String.class);
-                    getMenu = new Menu(menu_id, title, category, price, img, des);
-                    menuList.add(getMenu);
-                    setRecyclerViewFood();
+                    categoryList.add(category);
+                }
+                ArrayList<String> categoryList2 = (ArrayList<String>) categoryList.stream().distinct().collect(Collectors.toList());
+                for (String item : categoryList2) {
+                    Query getPopular = db.orderByChild("Category").equalTo(item).limitToFirst(1);
+                    getPopular.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                                //menu_id = ;
+                                popularList.clear();
+                                db.child(childSnapshot.getKey()).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        int menu_id = Integer.parseInt(childSnapshot.getKey());
+                                        String title = childSnapshot.child("Title").getValue(String.class);
+                                        String category = childSnapshot.child("Category").getValue(String.class);
+                                        Double price = Double.valueOf(childSnapshot.child("Price").getValue(String.class));
+                                        String img = childSnapshot.child("Image").getValue(String.class);
+                                        String des = childSnapshot.child("Description").getValue(String.class);
+                                        getPopularMenu = new Menu(menu_id, title, category, price, img, des);
+                                        popularList.add(getPopularMenu);
+                                        setPopularRecyclerViewFood();
+                                        popularAdapter.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        Query getRecentAdd = db.orderByChild("Date Add").limitToLast(5);
+        getRecentAdd.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    recentAddList.clear();
+                    db.child(childSnapshot.getKey()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            int menu_id = Integer.parseInt(childSnapshot.getKey());
+                            String title = childSnapshot.child("Title").getValue(String.class);
+                            String category = childSnapshot.child("Category").getValue(String.class);
+                            Double price = Double.valueOf(childSnapshot.child("Price").getValue(String.class));
+                            String img = childSnapshot.child("Image").getValue(String.class);
+                            String des = childSnapshot.child("Description").getValue(String.class);
+                            getRecentAddMenu  = new Menu(menu_id, title, category, price, img, des);                            recentAddList.add(getRecentAddMenu);
+                            setRecentRecycleViewFood();
+                            recentAddAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
 
             }
@@ -158,10 +224,7 @@ public class StoreFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
-
             }
-
-            ;
         });
 
         search.addTextChangedListener(new TextWatcher() {
@@ -179,33 +242,42 @@ public class StoreFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 filterList.clear();
                 if (s.toString().isEmpty()) {
-                    recyclerViewFood.setAdapter(new StoreHorizontalAdapter(getActivity(), menuList));
-                    foodAdapter.notifyDataSetChanged();
+                    popularFood.setAdapter(new StoreHorizontalAdapter(getActivity(), popularList));
+                    popularAdapter.notifyDataSetChanged();
                 } else {
                     Filter(s.toString());
                 }
             }
         });
 
-        foodAdapter = new StoreHorizontalAdapter(getContext(), menuList);;
+        popularAdapter = new StoreHorizontalAdapter(getContext(), popularList);
+        recentAddAdapter = new StoreHorizontalAdapter(getContext(), recentAddList);
         return root;
     }
 
-    private void setRecyclerViewFood() {
-        recyclerViewFood.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewFood.setHasFixedSize(true);
-        recyclerViewFood.setNestedScrollingEnabled(false);
-        recyclerViewFood.setAdapter(foodAdapter);
+    private void setPopularRecyclerViewFood() {
+
+        popularFood.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        popularFood.setHasFixedSize(true);
+        popularFood.setNestedScrollingEnabled(false);
+        popularFood.setAdapter(popularAdapter);
+    }
+
+    private void setRecentRecycleViewFood(){
+        recentAddFood.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recentAddFood.setHasFixedSize(true);
+        recentAddFood.setNestedScrollingEnabled(false);
+        recentAddFood.setAdapter(recentAddAdapter);
     }
 
     private void Filter(String text) {
-        for (Menu menu : menuList) {
+        for (Menu menu : popularList) {
             if (menu.getTitle().contains(text)) {
                 filterList.add(menu);
             }
         }
-        recyclerViewFood.setAdapter(new StoreHorizontalAdapter(getActivity(), filterList));
-        foodAdapter.notifyDataSetChanged();
+        popularFood.setAdapter(new StoreHorizontalAdapter(getActivity(), filterList));
+        popularAdapter.notifyDataSetChanged();
     }
 
 

@@ -45,7 +45,7 @@ public class ProfileFragment extends Fragment {
     static String KEY_EMAIL = "email";
     static String KEY_NAME = "name";
     static String KEY_PHONE = "phone";
-
+    SharedPreferences.Editor editor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,7 +54,7 @@ public class ProfileFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
         sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor = sharedPreferences.edit();
         email = sharedPreferences.getString(KEY_EMAIL, null);
         name = sharedPreferences.getString(KEY_NAME, null);
         phone = sharedPreferences.getString(KEY_PHONE, null);
@@ -127,6 +127,7 @@ public class ProfileFragment extends Fragment {
         if (!name.equals(fullName_edit_text.getText().toString())) {
             databaseReference.child(firebaseUser.getUid()).child("name").setValue(fullName_edit_text.getText().toString());
             name = fullName_edit_text.getText().toString();
+            editor.putString(KEY_NAME, name);
             return true;
         } else {
             return false;
@@ -136,6 +137,7 @@ public class ProfileFragment extends Fragment {
         if (!email.equals(email_edit_text.getText().toString())) {
             databaseReference.child(firebaseUser.getUid()).child("email").setValue(email_edit_text.getText().toString());
             email = email_edit_text.getText().toString();
+            editor.putString(KEY_EMAIL, email);
             return true;
         } else {
             return false;
@@ -145,6 +147,7 @@ public class ProfileFragment extends Fragment {
         if (!phone.equals(phone_edit_text.getText().toString())) {
             databaseReference.child(firebaseUser.getUid()).child("phone").setValue(phone_edit_text.getText().toString());
             phone = phone_edit_text.getText().toString();
+            editor.putString(KEY_PHONE, phone);
             return true;
         } else {
             return false;

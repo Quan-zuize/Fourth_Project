@@ -19,6 +19,7 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 public class Store_dashboardActivity extends AppCompatActivity {
     private ChipNavigationBar chipNavigationBar;
+    private Fragment fragment = null;
 
     SharedPreferences sharedPreferences;
     private static String SHARED_PREF_NAME = "myPref";
@@ -47,11 +48,15 @@ public class Store_dashboardActivity extends AppCompatActivity {
         bottomMenu();
     }
 
+    public void reloadFragment() {
+        if(fragment instanceof CartFragment) {
+            ((CartFragment)fragment).changeView();
+        }
+    }
     private void bottomMenu() {
         chipNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
             public void onItemSelected(int i) {
-                Fragment fragment = null;
                 switch (i) {
                     case R.id.navigation_shop:
                         fragment = new StoreFragment();

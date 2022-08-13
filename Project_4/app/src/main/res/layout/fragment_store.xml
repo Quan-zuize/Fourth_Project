@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Popular"
+            android:text="Món đặc trưng"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title_layout" />
@@ -56,17 +56,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            android:text="Popular Food"
+            android:text="Món mới"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/foods_recycler" />
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/popularFood"
+            android:id="@+id/recentAddFood"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="170dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

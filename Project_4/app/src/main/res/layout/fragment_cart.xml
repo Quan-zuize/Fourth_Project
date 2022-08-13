@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.CartFragment">
+    tools:context=".ui.CartFragment"
+    android:id="@+id/fragment_cart">
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -34,7 +35,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listCart"
                 android:layout_width="match_parent"
-                android:layout_height="325dp" />
+                android:layout_height="380dp" />
 
             <EditText
                 android:id="@+id/textNote"
@@ -42,13 +43,18 @@
                 android:layout_height="48dp"
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
                 android:hint="Tin nhắn:"
-                android:textSize="16sp"
-                android:textColor="@color/colorStandardBlack"/>
-
-            <Spinner
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/colorStandardBlack"
+                android:textSize="16sp" />
+            <!--                <Spinner-->
+            <!--                    android:id="@+id/site_spinner1"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:minHeight="48dp"-->
+            <!--                    tools:ignore="SpeakableTextPresentCheck" />-->
+            <org.angmarch.views.NiceSpinner
                 android:id="@+id/site_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,8 +95,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="40dp"
                 android:background="@drawable/round_button"
                 android:backgroundTint="@color/bgBottomNavigation"
                 android:gravity="center"

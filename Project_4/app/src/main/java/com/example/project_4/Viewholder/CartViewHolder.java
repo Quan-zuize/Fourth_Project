@@ -26,6 +26,8 @@ public class CartViewHolder extends RecyclerView.ViewHolder implements View.OnLo
         num = itemView.findViewById(R.id.numberItemsTxt);
         minusItem = itemView.findViewById(R.id.minusCartBtn);
         plusItem = itemView.findViewById(R.id.plusCartBtn);
+
+        itemView.setOnCreateContextMenuListener(this);
     }
 
     @Override
@@ -38,4 +40,6 @@ public class CartViewHolder extends RecyclerView.ViewHolder implements View.OnLo
         contextMenu.setHeaderTitle("Select Action");
         contextMenu.add(0,0,getAdapterPosition(),"DELETE");
     }
+
+
 }
