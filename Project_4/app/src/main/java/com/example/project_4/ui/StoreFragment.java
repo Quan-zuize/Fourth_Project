@@ -138,7 +138,7 @@ public class StoreFragment extends Fragment {
         });
 
         ArrayList<String> categoryList = new ArrayList<>();
-        db.addListenerForSingleValueEvent(new ValueEventListener() {
+        db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 categoryList.clear();
@@ -193,7 +193,7 @@ public class StoreFragment extends Fragment {
         });
 
         Query getRecentAdd = db.orderByChild("Date Add").limitToLast(5);
-        getRecentAdd.addListenerForSingleValueEvent(new ValueEventListener() {
+        getRecentAdd.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {

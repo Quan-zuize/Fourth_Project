@@ -1,13 +1,9 @@
-package com.example.project_4.ui;
+package com.example.project_4_admin.ui;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,33 +11,32 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.project_4.LoginActivity;
-import com.example.project_4.R;
-import com.example.project_4.SignUpActivity;
-import com.example.project_4.Store_dashboardActivity;
-import com.example.project_4.UpdatePassword;
+import androidx.fragment.app.Fragment;
+
+import com.example.project_4_admin.LoginActivity;
+import com.example.project_4_admin.R;
+import com.example.project_4_admin.SignUpActivity;
+import com.example.project_4_admin.Store_dashboardActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.regex.Pattern;
-
-public class ProfileFragment extends Fragment {
+public class ProfileManagerFragment extends Fragment {
 
 
     TextInputEditText fullName_edit_text;
     TextInputEditText email_edit_text;
-    TextInputEditText phone_edit_text;
+    TextInputEditText  phone_edit_text;
     String name, email, phone;
 
     DatabaseReference databaseReference;
     FirebaseAuth auth;
-    FirebaseUser firebaseUser;
+    FirebaseUser firebaseUser ;
 
     LinearLayout update_container;
-    Button btn_logout, btn_update, btn_login, btn_signup, btn_changePass;
+    Button btn_logout , btn_update, btn_login, btn_signup;
 
     SharedPreferences sharedPreferences;
     static String SHARED_PREF_NAME = "myPref";
@@ -54,7 +49,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_profile, container, false);
+        View root = inflater.inflate(R.layout.fragment_profile_manager, container, false);
 
         sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -74,7 +69,6 @@ public class ProfileFragment extends Fragment {
         btn_signup = root.findViewById(R.id.signupBtn);
         btn_logout = root.findViewById(R.id.LogOutBtn);
         btn_update = root.findViewById(R.id.UpdateBtn);
-        btn_changePass = root.findViewById(R.id.UpdatePassBtn);
         update_container = root.findViewById(R.id.profile_container);
 
         checkLogin();
@@ -100,7 +94,7 @@ public class ProfileFragment extends Fragment {
                 auth.signOut();
                 editor.clear();
                 editor.apply();
-                startActivity(new Intent(getContext(), Store_dashboardActivity.class));
+                startActivity(new Intent(getContext(), LoginActivity.class));
             }
         });
 
@@ -110,17 +104,10 @@ public class ProfileFragment extends Fragment {
                 update();
             }
         });
-
-        btn_changePass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getContext(), UpdatePassword.class));
-            }
-        });
         return root;
     }
 
-    private void loadInformation() {
+    private void loadInformation(){
         fullName_edit_text.setText(name);
         email_edit_text.setText(email);
         phone_edit_text.setText(phone);
@@ -129,7 +116,7 @@ public class ProfileFragment extends Fragment {
     private void update() {
         if (isFullNameChanged() || isEmailChanged() || isPhoneChanged()) {
             Toast.makeText(getContext(), "Data has been updated", Toast.LENGTH_LONG).show();
-        } else {
+        }else {
             Toast.makeText(getContext(), "Same data can not update", Toast.LENGTH_LONG).show();
         }
     }
@@ -145,41 +132,24 @@ public class ProfileFragment extends Fragment {
             return false;
         }
     }
-
     private boolean isEmailChanged() {
         if (!email.equals(email_edit_text.getText().toString())) {
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                email_edit_text.setError("Invalid Email !");
-                email_edit_text.requestFocus();
-                return false;
-            } else {
-                databaseReference.child(firebaseUser.getUid()).child("email").setValue(email_edit_text.getText().toString());
-                email = email_edit_text.getText().toString();
-                editor.putString(KEY_EMAIL, email);
-                editor.apply();
-                return true;
-            }
+            databaseReference.child(firebaseUser.getUid()).child("email").setValue(email_edit_text.getText().toString());
+            email = email_edit_text.getText().toString();
+            editor.putString(KEY_EMAIL, email);
+            editor.apply();
+            return true;
         } else {
             return false;
         }
     }
-
     private boolean isPhoneChanged() {
-        String pattern = "(0[3|5|7|8|9])+([0-9]{8})";
-        Pattern r = Pattern.compile(pattern);
-
         if (!phone.equals(phone_edit_text.getText().toString())) {
-            if (!r.matcher(phone_edit_text.getText().toString().trim()).find()) {
-                phone_edit_text.setError("Invalid Phone !");
-                phone_edit_text.requestFocus();
-                return false;
-            } else {
-                databaseReference.child(firebaseUser.getUid()).child("phone").setValue(phone_edit_text.getText().toString());
-                phone = phone_edit_text.getText().toString();
-                editor.putString(KEY_PHONE, phone);
-                editor.apply();
-                return true;
-            }
+            databaseReference.child(firebaseUser.getUid()).child("phone").setValue(phone_edit_text.getText().toString());
+            phone = phone_edit_text.getText().toString();
+            editor.putString(KEY_PHONE, phone);
+            editor.apply();
+            return true;
         } else {
             return false;
         }
@@ -188,11 +158,11 @@ public class ProfileFragment extends Fragment {
     private void checkLogin() {
         String phone = sharedPreferences.getString(KEY_PHONE, null);
         String email = sharedPreferences.getString(KEY_EMAIL, null);
-        if (phone == null || email == null) {
+        if (phone == null || email == null){
             btn_login.setVisibility(View.VISIBLE);
             btn_signup.setVisibility(View.VISIBLE);
             update_container.setVisibility(View.GONE);
-        } else {
+        }else{
             btn_login.setVisibility(View.GONE);
             btn_signup.setVisibility(View.GONE);
             update_container.setVisibility(View.VISIBLE);

@@ -2,14 +2,12 @@ package com.example.project_4;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-import com.example.project_4.adapters.StoreHorizontalAdapter;
 import com.example.project_4.service.ListenOrder;
 import com.example.project_4.ui.OrderFragment;
 import com.example.project_4.ui.CartFragment;
@@ -50,9 +48,10 @@ public class Store_dashboardActivity extends AppCompatActivity {
 
     public void reloadFragment() {
         if(fragment instanceof CartFragment) {
-            ((CartFragment)fragment).changeView();
+            ((CartFragment)fragment).reloadView();
         }
     }
+
     private void bottomMenu() {
         chipNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override

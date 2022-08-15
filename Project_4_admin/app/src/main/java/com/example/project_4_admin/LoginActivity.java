@@ -89,11 +89,11 @@ public class LoginActivity extends AppCompatActivity {
                         referenceUsers.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                editor.putString(KEY_NAME, snapshot.child("Name").toString());
-                                editor.putString(KEY_PHONE, snapshot.child("Phone").toString());
+                                editor.putString(KEY_NAME, snapshot.child("name").getValue().toString());
+                                editor.putString(KEY_PHONE, snapshot.child("phone").getValue().toString());
 
                                 if (snapshot.child("role").getValue(String.class).equals("manager")) {
-                                    editor.putString(KEY_SITE, snapshot.child("site_id").toString());
+                                    editor.putString(KEY_SITE, snapshot.child("site_id").getValue().toString());
                                     Toast.makeText(LoginActivity.this, "Login Successfully ", Toast.LENGTH_LONG).show();
                                     startActivity(new Intent(LoginActivity.this, Manager_dashboardActivity.class));
                                 } else if (snapshot.child("role").getValue(String.class).equals("user")) {

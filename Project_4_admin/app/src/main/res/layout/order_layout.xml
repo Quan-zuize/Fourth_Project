@@ -39,11 +39,11 @@
                 android:textStyle="bold"
                 />
             <TextView
-                android:id="@+id/order_site"
+                android:id="@+id/order_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="285 Đội Cấn, Hà Nội"
+                android:text="Số điện thoại: 0123456789"
                 android:gravity="center_vertical|start"
                 android:textStyle="bold"
                 />

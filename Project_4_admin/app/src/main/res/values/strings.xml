@@ -40,6 +40,7 @@
     <string name="title_manage">Quản lí</string>
     <string name="total">Tổng:</string>
     <string name="order">Đặt hàng</string>
+    <string name="order_details">Chi tiết đơn đặt</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

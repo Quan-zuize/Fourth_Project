@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +24,7 @@ import com.example.project_4.Interface.ChangeNumberItemsListener;
 import com.example.project_4.R;
 import com.example.project_4.Store_dashboardActivity;
 import com.example.project_4.adapters.CartAdapter;
+import com.example.project_4.model.Order;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,10 +54,19 @@ public class CartFragment extends Fragment {
     ScrollView scrollView;
     Button btnOrder;
     NiceSpinner spinner;
-    double total ;
+
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+
+
+
     int max_id ;
+    int order_id;
     String buyer_id;
+    String note, buyer_name,site_address;
+    double total ;
+    LocalDateTime timeOrder = LocalDateTime.now();
+
+    List<OrderDetail> listDetails = new ArrayList<>();
 
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
@@ -92,18 +101,18 @@ public class CartFragment extends Fragment {
         spinner = root.findViewById(R.id.site_spinner);
 
         menuList = managementCart.getListCart();
-        changeView();
+        reloadView();
         loadListFood();
         displaySite();
         calculateCart();
 
-        Query query = requests.orderByKey().limitToLast(1);
-        query.addValueEventListener(new ValueEventListener() {
+        Query query = requests.orderByChild("orderID");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                     try {
-                        max_id = Integer.parseInt(childSnapshot.getKey());
+                        max_id = childSnapshot.child("orderID").getValue(Integer.class);
                     } catch (NumberFormatException ex) { // handle your exception
 
                     }
@@ -115,45 +124,43 @@ public class CartFragment extends Fragment {
 
             }
         });
-
         btnOrder = root.findViewById(R.id.btnOrder);
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String note, buyer_name,site_address;
-                int order_id, status;
-
                 //insert to firebase
-
                 //id last order +1
                 order_id = max_id + 1;
                 buyer_name = sharedPreferences.getString(KEY_NAME, null);
-                LocalDateTime timeOrder = LocalDateTime.now();
-                status = 1;
                 site_address = spinner.getSelectedItem().toString();
                 note = txt_note.getText().toString();
 
-                requests.child(String.valueOf(order_id)).child("Buyer ID").setValue(buyer_id);
-                requests.child(String.valueOf(order_id)).child("Buyer Name").setValue(buyer_name);
-                requests.child(String.valueOf(order_id)).child("Site Address").setValue(site_address);
-                requests.child(String.valueOf(order_id)).child("Total").setValue(total);
-                requests.child(String.valueOf(order_id)).child("Status").setValue(status);
-                requests.child(String.valueOf(order_id)).child("Note").setValue(note);
-                requests.child(String.valueOf(order_id)).child("Time Order").setValue(dtf.format(timeOrder));
-
-                for (int i = 1; i < menuList.size(); i++) {
+                for (int i = 0; i < menuList.size(); i++) {
                     OrderDetail od = new OrderDetail();
-                    od.setMenu_id(menuList.get(i).getMenu_id());
-                    od.setMenu_title(menuList.get(i).getTitle());
+                    od.setMenuId(menuList.get(i).getMenu_id());
+                    od.setMenuTitle(menuList.get(i).getTitle());
                     od.setPrice(menuList.get(i).getPrice());
                     od.setQuantity(menuList.get(i).getNumInCart());
                     od.setTotal(menuList.get(i).getPrice() * menuList.get(i).getNumInCart());
-                    requests.child(String.valueOf(order_id)).child("Detail").child(""+i).setValue(od);
+                    listDetails.add(od);
+//                    requests.child(String.valueOf(order_id)).child("Detail").child(""+i).setValue(od);
                 }
+
+                Order order = new Order(order_id,buyer_id,buyer_name,total,site_address,note, dtf.format(timeOrder),listDetails);
+
+//                requests.child(String.valueOf(order_id)).child("Buyer ID").setValue(buyer_id);
+//                requests.child(String.valueOf(order_id)).child("Buyer Name").setValue(buyer_name);
+//                requests.child(String.valueOf(order_id)).child("Site Address").setValue(site_address);
+//                requests.child(String.valueOf(order_id)).child("Total").setValue(total);
+//                requests.child(String.valueOf(order_id)).child("Status").setValue(status);
+//                requests.child(String.valueOf(order_id)).child("Note").setValue(note);
+//                requests.child(String.valueOf(order_id)).child("Time Order").setValue(dtf.format(timeOrder));
+
+                requests.child(String.valueOf(System.currentTimeMillis())).setValue(order);
 
                 //Clear cart
                 managementCart.cleanCart();
-                Toast.makeText(getContext(), "Thank you for ordering.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Cảm ơn bạn rất nhiều ^^", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(CartFragment.this.getContext(), Store_dashboardActivity.class));
             }
         });
@@ -162,7 +169,7 @@ public class CartFragment extends Fragment {
         return root;
     }
 
-    public void changeView(){
+    public void reloadView(){
         if (menuList.isEmpty()) {
             txt_empty.setVisibility(View.VISIBLE);
             scrollView.setVisibility(View.GONE);

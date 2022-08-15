@@ -3,7 +3,9 @@ package com.example.project_4;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -32,10 +34,14 @@ public class DetailsActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference menus;
-    FirebaseUser firebaseUser;
 
     Menu currentFood;
     ManagementCart managementCart;
+
+    SharedPreferences sharedPreferences;
+    static String SHARED_PREF_NAME = "myPref";
+    static String KEY_ID = "id";
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +52,7 @@ public class DetailsActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         menus = database.getReference("Menu");
 
-        String key = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        managementCart = new ManagementCart(this,key);
+        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
 
         menuImg = findViewById(R.id.menu_img);
         menuPrice = findViewById(R.id.menu_price);
@@ -80,10 +85,15 @@ public class DetailsActivity extends AppCompatActivity {
         btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                quantity = Integer.parseInt(textView.getText().toString());
-                currentFood.setNumInCart(quantity);
-                managementCart.insertFood(currentFood);
-                Toast.makeText(DetailsActivity.this, "Added to Cart", Toast.LENGTH_SHORT).show();
+                if(!checkLogin()){
+                    quantity = Integer.parseInt(textView.getText().toString());
+                    currentFood.setNumInCart(quantity);
+                    managementCart = new ManagementCart(getBaseContext(),id);
+                    managementCart.insertFood(currentFood);
+                    Toast.makeText(DetailsActivity.this, "Added to Cart", Toast.LENGTH_SHORT).show();
+                }else{
+                    redirect();
+                }
             }
         });
     }
@@ -109,5 +119,15 @@ public class DetailsActivity extends AppCompatActivity {
             textView.setText(String.valueOf(quantity + 1));
         }
         view.refreshDrawableState();
+    }
+
+    private boolean checkLogin() {
+        id = sharedPreferences.getString(KEY_ID, null);
+        return (id == null);
+    }
+
+    private void redirect() {
+        BackHomeDialog backHomeDialog = new BackHomeDialog();
+        backHomeDialog.show(getSupportFragmentManager(), "back home dialog");
     }
 }

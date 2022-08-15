@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.project_4_admin.service.ListenOrder;
 import com.example.project_4_admin.ui.OrderManagerFragment;
+import com.example.project_4_admin.ui.ProfileManagerFragment;
 import com.example.project_4_admin.ui.StoreFragment;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
@@ -38,7 +39,7 @@ public class Manager_dashboardActivity extends AppCompatActivity {
         chipNavigationBar.setItemSelected(R.id.navigation_shop, true);
 
         if (savedInstanceState == null) {
-            chipNavigationBar.setItemSelected(R.id.navigation_shop, true);
+            chipNavigationBar.setItemSelected(R.id.navigation_shop_mana, true);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_admin, new StoreFragment()).commit();
 
         }
@@ -55,30 +56,31 @@ public class Manager_dashboardActivity extends AppCompatActivity {
             public void onItemSelected(int i) {
                 Fragment fragment = null;
                 switch (i) {
-                    case R.id.navigation_shop:
+                    case R.id.navigation_shop_mana:
                         fragment = new StoreFragment();
                         break;
-                    case R.id.navigation_order:
+                    case R.id.navigation_order_mana:
                         if (!checkLogin()) {
                             fragment = new OrderManagerFragment();
                         } else {
                             redirect();
                         }
                         break;
-                    case R.id.navigation_cart:
+                    case R.id.navigation_cart_mana:
 //                        if (!checkLogin()) {
 //                            fragment = new CartFragment();
 //                        } else {
 //                            redirect();
 //                        }
                         break;
-                    case R.id.navigation_profile:
-//                        fragment = new ProfileFragment();
+                    case R.id.navigation_profile_mana:
+                        fragment = new ProfileManagerFragment();
                         break;
                 }
 
                 if (fragment != null) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_admin
+                            , fragment).commit();
                 }
             }
         });

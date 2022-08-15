@@ -101,15 +101,6 @@
             android:background="@drawable/round_button"
             android:backgroundTint="@color/peach"
             android:text="@string/btn_sign_out" />
-
-        <Button
-            android:id="@+id/UpdatePassBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/round_button"
-            android:backgroundTint="@color/peach"
-            android:text="Update Password"
-            android:layout_marginTop="20dp"/>
     </LinearLayout>
 </LinearLayout>
-    <!--    ProfileFragment-->
+<!--    ProfileFragment-->

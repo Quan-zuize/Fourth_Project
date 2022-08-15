@@ -68,7 +68,7 @@ public class ListenOrder extends Service implements ChildEventListener {
 
     private void showNotification(String key, Order order) {
         Intent intent = new Intent(getBaseContext(), Manager_dashboardActivity.class);
-        intent.putExtra("userName",order.getBuyer_name());
+        intent.putExtra("userName",order.getBuyerName());
         PendingIntent contentIntent = PendingIntent.getActivity(getBaseContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext());

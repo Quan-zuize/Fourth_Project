@@ -33,4 +33,9 @@ public class Site {
     public void setContact_info(String contact_info) {
         this.contact_info = contact_info;
     }
+
+    @Override
+    public String toString() {
+        return ""+siteId;
+    }
 }

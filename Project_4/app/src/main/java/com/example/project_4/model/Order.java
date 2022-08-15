@@ -1,51 +1,55 @@
 package com.example.project_4.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Order implements Serializable {
-    int order_id, status;
-    String buyer_id, buyer_name;
+    int orderID, status;
+    String buyerId, buyerName;
     Double total;
-    String site_address;
-    Date TimeOrder;
-    Date TimeTaken;
+    String siteAddress, note;
+    String TimeOrder;
+    String TimeTaken;
+    List<OrderDetail> Details;
 
-    public Order() {
-    }
-
-    public Order(int order_id, String buyer_id, String buyer_name, Double total, String site_address, Date timeOrder) {
-        this.order_id = order_id;
-        this.buyer_id = buyer_id;
+    public Order(int orderID, String buyerId, String buyerName, Double total, String siteAddress, String note, String timeOrder, List<OrderDetail> details) {
+        this.orderID = orderID;
+        this.buyerId = buyerId;
         this.status = 1; //0: cancelled, 2:Processing, 3:Paid
-        this.buyer_name = buyer_name;
+        this.buyerName = buyerName;
         this.total = total;
-        this.site_address = site_address;
+        this.siteAddress = siteAddress;
+        this.note = note;
         this.TimeOrder = timeOrder;
+        this.TimeTaken = "";
+        this.Details = details;
     }
 
     public int getId() {
-        return order_id;
+        return orderID;
     }
 
     public void setId(int id) {
-        this.order_id = order_id;
+        this.orderID = orderID;
     }
 
-    public String getBuyer_id() {
-        return buyer_id;
+    public String getBuyerId() {
+        return buyerId;
     }
 
-    public void setBuyer_id(String buyer_id) {
-        this.buyer_id = buyer_id;
+    public void setBuyerId(String buyerId) {
+        this.buyerId = buyerId;
     }
 
-    public String getBuyer_name() {
-        return buyer_name;
+    public String getBuyerName() {
+        return buyerName;
     }
 
-    public void setBuyer_name(String buyer_name) {
-        this.buyer_name = buyer_name;
+    public void setBuyerName(String buyerName) {
+        this.buyerName = buyerName;
     }
 
     public Double getTotal() {
@@ -56,12 +60,20 @@ public class Order implements Serializable {
         this.total = total;
     }
 
-    public int getOrder_id() {
-        return order_id;
+    public String getNote() {
+        return note;
     }
 
-    public void setOrder_id(int order_id) {
-        this.order_id = order_id;
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public int getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
     }
 
     public int getStatus() {
@@ -72,27 +84,35 @@ public class Order implements Serializable {
         this.status = status;
     }
 
-    public String getSite_address() {
-        return site_address;
+    public String getSiteAddress() {
+        return siteAddress;
     }
 
-    public void setSite_address(String site_address) {
-        this.site_address = site_address;
+    public void setSiteAddress(String siteAddress) {
+        this.siteAddress = siteAddress;
     }
 
-    public Date getTimeOrder() {
+    public String getTimeOrder() {
         return TimeOrder;
     }
 
-    public void setTimeOrder(Date timeOrder) {
+    public void setTimeOrder(String timeOrder) {
         TimeOrder = timeOrder;
     }
 
-    public Date getTimeTaken() {
+    public String getTimeTaken() {
         return TimeTaken;
     }
 
-    public void setTimeTaken(Date timeTaken) {
+    public void setTimeTaken(String timeTaken) {
         TimeTaken = timeTaken;
+    }
+
+    public List<OrderDetail> getDetails() {
+        return Details;
+    }
+
+    public void setDetails(List<OrderDetail> details) {
+        Details = details;
     }
 }

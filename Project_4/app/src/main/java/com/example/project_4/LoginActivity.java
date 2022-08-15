@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString(KEY_PHONE, snapshot.child("phone").getValue().toString());
 
                                 if (snapshot.child("role").getValue(String.class).equals("manager")) {
-                                    editor.putString(KEY_SITE, snapshot.child("site_id").toString());
+                                    editor.putString(KEY_SITE, snapshot.child("site_id").getValue().toString());
                                     Toast.makeText(LoginActivity.this, "Login Successfully ", Toast.LENGTH_LONG).show();
                                     editor.apply();
 //                                    startActivity(new Intent(LoginActivity.this, Manager_dashboardActivity.class));

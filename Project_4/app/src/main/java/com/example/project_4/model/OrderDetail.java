@@ -3,8 +3,8 @@ package com.example.project_4.model;
 import java.io.Serializable;
 
 public class OrderDetail implements Serializable {
-    int menu_id;
-    String menu_title;
+    int menuId;
+    String menuTitle;
     int quantity;
     double price;
     double total;
@@ -12,20 +12,20 @@ public class OrderDetail implements Serializable {
     public OrderDetail() {
     }
 
-    public OrderDetail(int menu_id, String menu_title, int quantity, double price) {
-        this.menu_id = menu_id;
-        this.menu_title = menu_title;
+    public OrderDetail(int menuId, String menuTitle, int quantity, double price) {
+        this.menuId = menuId;
+        this.menuTitle = menuTitle;
         this.quantity = quantity;
         this.price = price;
         this.total = price * quantity;
     }
 
-    public int getMenu_id() {
-        return menu_id;
+    public int getMenuId() {
+        return menuId;
     }
 
-    public void setMenu_id(int menu_id) {
-        this.menu_id = menu_id;
+    public void setMenuId(int menuId) {
+        this.menuId = menuId;
     }
 
 //    public int getOrderId() {
@@ -36,12 +36,12 @@ public class OrderDetail implements Serializable {
 //        this.orderId = orderId;
 //    }
 
-    public String getMenu_title() {
-        return menu_title;
+    public String getMenuTitle() {
+        return menuTitle;
     }
 
-    public void setMenu_title(String menu_title) {
-        this.menu_title = menu_title;
+    public void setMenuTitle(String menuTitle) {
+        this.menuTitle = menuTitle;
     }
 
     public int getQuantity() {
