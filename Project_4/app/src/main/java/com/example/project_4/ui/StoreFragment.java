@@ -18,6 +18,7 @@ import android.widget.EditText;
 
 import com.example.project_4.MenuListActivity;
 import com.example.project_4.R;
+import com.example.project_4.Store_dashboardActivity;
 import com.example.project_4.adapters.StoreHorizontalAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,9 +29,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import com.example.project_4.model.Menu;
+import com.mancj.materialsearchbar.MaterialSearchBar;
 
 public class StoreFragment extends Fragment {
     List<Menu> recentAddList  = new ArrayList<>();
@@ -38,7 +41,7 @@ public class StoreFragment extends Fragment {
 
     StoreHorizontalAdapter popularAdapter, recentAddAdapter ;
 
-    EditText search;
+    MaterialSearchBar search;
     List<Menu> filterList = new ArrayList<>();
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -137,6 +140,26 @@ public class StoreFragment extends Fragment {
             }
         });
 
+
+        search.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
+            @Override
+            public void onSearchStateChanged(boolean enabled) {
+
+            }
+
+            @Override
+            public void onSearchConfirmed(CharSequence text) {
+                String seach = search.getText().toLowerCase();
+                intent.putExtra("search", seach);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onButtonClicked(int buttonCode) {
+
+            }
+        });
+
         ArrayList<String> categoryList = new ArrayList<>();
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -227,28 +250,28 @@ public class StoreFragment extends Fragment {
             }
         });
 
-        search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                filterList.clear();
-                if (s.toString().isEmpty()) {
-                    popularFood.setAdapter(new StoreHorizontalAdapter(getActivity(), popularList));
-                    popularAdapter.notifyDataSetChanged();
-                } else {
-                    Filter(s.toString());
-                }
-            }
-        });
+//        search.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                filterList.clear();
+//                if (s.toString().isEmpty()) {
+//                    popularFood.setAdapter(new StoreHorizontalAdapter(getActivity(), popularList));
+//                    popularAdapter.notifyDataSetChanged();
+//                } else {
+//                    Filter(s.toString());
+//                }
+//            }
+//        });
 
         popularAdapter = new StoreHorizontalAdapter(getContext(), popularList);
         recentAddAdapter = new StoreHorizontalAdapter(getContext(), recentAddList);
@@ -278,6 +301,10 @@ public class StoreFragment extends Fragment {
         }
         popularFood.setAdapter(new StoreHorizontalAdapter(getActivity(), filterList));
         popularAdapter.notifyDataSetChanged();
+    }
+
+    private void Find(){
+
     }
 
 

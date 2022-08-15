@@ -79,4 +79,6 @@ dependencies {
     implementation 'com.github.arcadefire:nice-spinner:1.4.4'
 
     implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
+
+    implementation 'com.github.mancj:MaterialSearchBar:0.8.5'
 }
