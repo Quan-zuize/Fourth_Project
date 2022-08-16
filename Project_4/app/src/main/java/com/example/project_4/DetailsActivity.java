@@ -26,7 +26,7 @@ import com.example.project_4.model.Menu;
 public class DetailsActivity extends AppCompatActivity {
     ImageButton minusImg, plusImg;
     ImageView menuImg, backImg;
-    TextView textView, menuPrice, menuName, menuDes;
+    TextView textView, menuPrice, menuName, menuDes, comboFood;
     public int quantity;
     Button btnCart;
 
@@ -54,6 +54,7 @@ public class DetailsActivity extends AppCompatActivity {
         menuName = findViewById(R.id.menu_name);
         menuDes = findViewById(R.id.menu_des);
         btnCart = findViewById(R.id.button);
+        comboFood = findViewById(R.id.combo_food);
 
         minusImg = findViewById(R.id.imageButton1);
         plusImg = findViewById(R.id.imageButton2);
@@ -72,10 +73,17 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void getBundle() {
         currentFood = (Menu) getIntent().getSerializableExtra("object");
+        String description = currentFood.getDescription();
+        if (currentFood.getCategory().equals("Combo")){
+            comboFood.setVisibility(View.VISIBLE);
+            String[] parts = description.split("\n");
+            comboFood.setText(parts[0].replaceAll("(^\\[|\\]$)", "").trim());
+            description = parts[1];
+        }
         Picasso.get().load(currentFood.getImage_src()).into(menuImg);
         menuPrice.setText(String.format("%,.0f", currentFood.getPrice()).concat(" đ"));
         menuName.setText(currentFood.getTitle());
-        menuDes.setText(currentFood.getDescription());
+        menuDes.setText(description);
 
         btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
