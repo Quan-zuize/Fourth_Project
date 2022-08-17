@@ -193,6 +193,8 @@ public class CartFragment extends Fragment {
                     Site site = new Site(Integer.parseInt(data.getKey()),data.child("Address").getValue().toString());
                     list.add(site);
                 }
+                final SpinnerAdapter spinnerAdapter = new SpinnerAdapter(getContext(), R.layout.item_site_selected, list);
+                spinner.setAdapter(spinnerAdapter);
             }
 
             @Override
@@ -201,8 +203,7 @@ public class CartFragment extends Fragment {
             }
         });
 
-        final SpinnerAdapter spinnerAdapter = new SpinnerAdapter(this.getContext(), R.layout.item_site_selected, list);
-        spinner.setAdapter(spinnerAdapter);
+
     }
 
     @Override

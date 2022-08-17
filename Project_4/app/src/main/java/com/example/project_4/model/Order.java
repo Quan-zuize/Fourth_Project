@@ -11,7 +11,12 @@ public class Order implements Serializable {
     Date TimeOrder;
     Date TimeTaken;
 
-    public Order() {
+    public Order(){}
+
+    public Order(int status, String site_address, Date timeOrder) {
+        this.status = status;
+        this.site_address = site_address;
+        this.TimeOrder = timeOrder;
     }
 
     public Order(int order_id, String buyer_id, String buyer_name, Double total, String site_address, Date timeOrder) {

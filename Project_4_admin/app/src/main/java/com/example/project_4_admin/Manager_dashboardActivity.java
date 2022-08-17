@@ -13,11 +13,6 @@ import com.example.project_4_admin.ui.OrderManagerFragment;
 import com.example.project_4_admin.ui.StoreFragment;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
-import com.example.project_4_admin.BackHomeDialog;
-import com.example.project_4_admin.R;
-import com.example.project_4_admin.ui.StoreFragment;
-import com.ismaeldivita.chipnavigation.ChipNavigationBar;
-
 public class Manager_dashboardActivity extends AppCompatActivity {
     private ChipNavigationBar chipNavigationBar;
 

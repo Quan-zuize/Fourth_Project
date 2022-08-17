@@ -18,7 +18,6 @@ public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     public OrderViewHolder(@NonNull View itemView) {
         super(itemView);
-
         txtOrderId = itemView.findViewById(R.id.order_id);
         txtOrderStatus = itemView.findViewById(R.id.order_status);
         txtSite = itemView.findViewById(R.id.order_site);
@@ -26,9 +25,6 @@ public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnC
         itemView.setOnClickListener(this);
     }
 
-    public void setItemClickListener(ItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
-    }
 
     @Override
     public void onClick(View view) {
