@@ -1,6 +1,8 @@
 package com.example.project_4_admin.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -33,16 +35,17 @@ import java.util.stream.Collectors;
 import com.example.project_4_admin.model.Menu;
 
 public class StoreFragment extends Fragment {
-    List<Menu> recentAddList  = new ArrayList<>();
+    List<Menu> recentAddList = new ArrayList<>();
     List<Menu> popularList = new ArrayList<>();
 
-    StoreHorizontalAdapter popularAdapter, recentAddAdapter ;
+    StoreHorizontalAdapter popularAdapter, recentAddAdapter;
 
     EditText search;
     List<Menu> filterList = new ArrayList<>();
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference db = database.getReference("Menu");
+    DatabaseReference referenceSite = database.getReference("Site");
 
     RecyclerView popularFood, recentAddFood;
     Button btn_rice, btn_hot_pot, btn_noodle_soup, btn_soup, btn_dessert, btn_fast_food, btn_combo, btn_drink;
@@ -50,6 +53,13 @@ public class StoreFragment extends Fragment {
     Menu getRecentAddMenu;
     Menu getPopularMenu;
     String[] category;
+
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    static String SHARED_PREF_NAME = "myPref";
+    static String KEY_SITE = "site";
+    static String KEY_ADDRESS = "address";
+    static String site_id;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,6 +79,13 @@ public class StoreFragment extends Fragment {
 
         recentAddFood = root.findViewById(R.id.recentAddFood);
         popularFood = root.findViewById(R.id.foods_recycler);
+
+        sharedPreferences = getContext().getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        site_id = sharedPreferences.getString(KEY_SITE, null);
+        if(site_id != null){
+            getSite_address(site_id);
+        }
 
         Intent intent = new Intent(this.getContext(), MenuListActivity.class);
 
@@ -207,7 +224,8 @@ public class StoreFragment extends Fragment {
                             Double price = Double.valueOf(childSnapshot.child("Price").getValue(String.class));
                             String img = childSnapshot.child("Image").getValue(String.class);
                             String des = childSnapshot.child("Description").getValue(String.class);
-                            getRecentAddMenu  = new Menu(menu_id, title, category, price, img, des);                            recentAddList.add(getRecentAddMenu);
+                            getRecentAddMenu = new Menu(menu_id, title, category, price, img, des);
+                            recentAddList.add(getRecentAddMenu);
                             setRecentRecycleViewFood();
                             recentAddAdapter.notifyDataSetChanged();
                         }
@@ -263,7 +281,7 @@ public class StoreFragment extends Fragment {
         popularFood.setAdapter(popularAdapter);
     }
 
-    private void setRecentRecycleViewFood(){
+    private void setRecentRecycleViewFood() {
         recentAddFood.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recentAddFood.setHasFixedSize(true);
         recentAddFood.setNestedScrollingEnabled(false);
@@ -280,5 +298,18 @@ public class StoreFragment extends Fragment {
         popularAdapter.notifyDataSetChanged();
     }
 
+    private void getSite_address(String id) {
+        referenceSite.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                editor.putString(KEY_ADDRESS, snapshot.child(id).child("Address").getValue(String.class));
+                editor.apply();
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 }

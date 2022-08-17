@@ -48,7 +48,7 @@ public class DetailsActivity extends AppCompatActivity {
 //        minusImg = findViewById(R.id.imageButton1);
 //        plusImg = findViewById(R.id.imageButton2);
 //        textView = findViewById(R.id.numCart);
-        quantity = Integer.parseInt(textView.getText().toString());
+//        quantity = Integer.parseInt(textView.getText().toString());
 
         backImg = findViewById(R.id.imageView7);
         backImg.setOnClickListener(new View.OnClickListener() {

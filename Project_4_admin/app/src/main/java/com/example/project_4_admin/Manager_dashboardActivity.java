@@ -1,23 +1,27 @@
 package com.example.project_4_admin;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.example.project_4_admin.service.ListenOrder;
+import com.example.project_4_admin.model.Token;
 import com.example.project_4_admin.ui.OrderManagerFragment;
 import com.example.project_4_admin.ui.ProfileManagerFragment;
 import com.example.project_4_admin.ui.StoreFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
-import com.example.project_4_admin.BackHomeDialog;
-import com.example.project_4_admin.R;
-import com.example.project_4_admin.ui.StoreFragment;
-import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Manager_dashboardActivity extends AppCompatActivity {
     private ChipNavigationBar chipNavigationBar;
@@ -26,6 +30,8 @@ public class Manager_dashboardActivity extends AppCompatActivity {
     private static String SHARED_PREF_NAME = "myPref";
     private static String KEY_PASS = "pass";
     private static String KEY_EMAIL = "email";
+    private static String KEY_ID = "id";
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +49,31 @@ public class Manager_dashboardActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_admin, new StoreFragment()).commit();
 
         }
-        //Service
-        Intent service = new Intent(Manager_dashboardActivity.this, ListenOrder.class);
-        startService(service);
-        
+
+        id = sharedPreferences.getString(KEY_ID, null);
         bottomMenu();
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if(!task.isSuccessful()){
+                    return;
+                }
+                String token = task.getResult();
+                System.out.println("TOKEN : "+token);
+            }
+        });
+
+        //Service
+        if(id != null){
+            updateToken(FirebaseInstanceId.getInstance().getToken());
+        }
+    }
+
+    private void updateToken(String token) {
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference tokens = db.getReference("Token");
+        Token data = new Token(token,true);
+        tokens.child(id).setValue(data);
     }
 
     private void bottomMenu() {

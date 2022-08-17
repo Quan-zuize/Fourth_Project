@@ -2,6 +2,7 @@ package com.example.project_4_admin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,12 +21,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuListActivity extends AppCompatActivity {
+    TextView txtCat;
+
     Menu getMenu;
     String categoryName = "";
     private List<Menu> menuList = new ArrayList<>();
+
     MenuListAdapter adapter;
     int menu_id;
-//    ArrayList<String> imgList = new ArrayList<>();
+    //    ArrayList<String> imgList = new ArrayList<>();
     RecyclerView food_recycler;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference db = database.getReference("Menu");
@@ -36,13 +40,18 @@ public class MenuListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu_list);
 
         food_recycler = findViewById(R.id.food_recycler);
+        txtCat = findViewById(R.id.textCat);
 
         adapter = new MenuListAdapter(menuList,getApplicationContext());
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         food_recycler.setLayoutManager(layoutManager);
         Intent data = getIntent();
+
         String[] category = (String[]) data.getSerializableExtra("category");
+        categoryName = String.join(" ",category);
+
+        txtCat.setText(categoryName);
         if (category == null) {
             db.addValueEventListener(new ValueEventListener() {
                 @Override

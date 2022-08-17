@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     tools:context=".ui.ProfileFragment">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -53,7 +55,7 @@
                 android:drawablePadding="10dp"
                 android:inputType="text"
                 android:text="Name"
-                android:focusedByDefault="false"/>
+                />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -68,7 +70,7 @@
                 android:drawableStart="@drawable/ic_baseline_email_24"
                 android:drawablePadding="10dp"
                 android:text="@string/email"
-                android:focusedByDefault="false"/>
+                />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -83,7 +85,7 @@
                 android:drawableStart="@drawable/ic_baseline_smartphone_24"
                 android:drawablePadding="10dp"
                 android:text="@string/hint_phone"
-                android:focusedByDefault="false"/>
+                />
         </com.google.android.material.textfield.TextInputLayout>
         <Button
             android:id="@+id/UpdateBtn"

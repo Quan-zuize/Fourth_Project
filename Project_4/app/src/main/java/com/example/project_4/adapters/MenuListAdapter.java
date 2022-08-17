@@ -47,6 +47,7 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.MyView
             public void onClick(View view) {
                 Intent intent = new Intent(holder.itemView.getContext(), DetailsActivity.class);
                 intent.putExtra("object",menuList.get(position));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });

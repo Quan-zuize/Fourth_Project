@@ -78,5 +78,9 @@ dependencies {
     //Spinner
     implementation 'com.github.arcadefire:nice-spinner:1.4.4'
 
+    //Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+
     implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
 }

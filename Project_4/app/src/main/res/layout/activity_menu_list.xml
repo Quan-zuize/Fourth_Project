@@ -6,12 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".MenuListActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/food_recycler"
+    <TextView
+        android:id="@+id/textCat"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/amita"
+        android:text="Category"
+        android:textAlignment="center"
+        android:textColor="@color/peach"
+        android:textSize="30dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/food_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="680dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textCat" />
 </androidx.constraintlayout.widget.ConstraintLayout>

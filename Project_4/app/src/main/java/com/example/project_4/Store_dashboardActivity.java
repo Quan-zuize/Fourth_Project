@@ -1,18 +1,24 @@
 package com.example.project_4;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-import com.example.project_4.service.ListenOrder;
+import com.example.project_4.model.Token;
 import com.example.project_4.ui.OrderFragment;
 import com.example.project_4.ui.CartFragment;
 import com.example.project_4.ui.ProfileFragment;
 import com.example.project_4.ui.StoreFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 public class Store_dashboardActivity extends AppCompatActivity {
@@ -23,6 +29,8 @@ public class Store_dashboardActivity extends AppCompatActivity {
     private static String SHARED_PREF_NAME = "myPref";
     private static String KEY_PASS = "pass";
     private static String KEY_EMAIL = "email";
+    private static String KEY_ID = "id";
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +48,31 @@ public class Store_dashboardActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StoreFragment()).commit();
 
         }
-        //Service
-        Intent service = new Intent(Store_dashboardActivity.this, ListenOrder.class);
-        startService(service);
+
+        id = sharedPreferences.getString(KEY_ID, null);
         bottomMenu();
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if(!task.isSuccessful()){
+                    return;
+                }
+                String token = task.getResult();
+                System.out.println("TOKEN : "+token);
+            }
+        });
+
+        //Service
+        if(id != null){
+            updateToken(FirebaseInstanceId.getInstance().getToken());
+        }
+    }
+
+    private void updateToken(String token) {
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference tokens = db.getReference("Token");
+        Token data = new Token(token,false);
+        tokens.child(id).setValue(data);
     }
 
     public void reloadFragment() {

@@ -87,6 +87,7 @@ public class UpdatePassword extends AppCompatActivity {
                                                 if (task.isSuccessful()) {
 //                                            Log.d(TAG, "Password updated");
                                                     Toast.makeText(UpdatePassword.this, "Password updated", Toast.LENGTH_SHORT).show();
+                                                    finish();
                                                 } else {
                                                     Toast.makeText(UpdatePassword.this, "Error password not updated", Toast.LENGTH_SHORT).show();
 //                                            Log.d(TAG, "Error password not updated");

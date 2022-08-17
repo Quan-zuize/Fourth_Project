@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     tools:context=".ui.StoreFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,9 +18,9 @@
             android:id="@+id/search_bar"
             android:layout_width="390dp"
             android:layout_height="wrap_content"
+            android:imeOptions="flagNoExtractUi"
             android:background="@drawable/rounded_bg"
             android:drawableRight="@drawable/ic_baseline_search_24"
-            android:focusable="false"
             android:fontFamily="@font/amita"
             android:hint="Enjoy Food &amp; Drink now~"
             android:padding="10dp"

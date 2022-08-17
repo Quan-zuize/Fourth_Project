@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.example.project_4.adapters.MenuListAdapter;
 import com.example.project_4.adapters.StoreHorizontalAdapter;
@@ -21,9 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuListActivity extends AppCompatActivity {
+    TextView txtCat;
+
     Menu getMenu;
     String categoryName = "";
     private List<Menu> menuList = new ArrayList<>();
+
     MenuListAdapter adapter;
     int menu_id;
 //    ArrayList<String> imgList = new ArrayList<>();
@@ -37,13 +41,18 @@ public class MenuListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu_list);
 
         food_recycler = findViewById(R.id.food_recycler);
+        txtCat = findViewById(R.id.textCat);
 
         adapter = new MenuListAdapter(menuList,getApplicationContext());
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         food_recycler.setLayoutManager(layoutManager);
         Intent data = getIntent();
+
         String[] category = (String[]) data.getSerializableExtra("category");
+        categoryName = String.join(" ",category);
+
+        txtCat.setText(categoryName);
         if (category == null) {
             db.addValueEventListener(new ValueEventListener() {
                 @Override

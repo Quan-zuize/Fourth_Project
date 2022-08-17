@@ -1,4 +1,4 @@
-package com.example.project_4.model;
+package com.example.project_4_admin.model;
 
 public class Token {
     String token;

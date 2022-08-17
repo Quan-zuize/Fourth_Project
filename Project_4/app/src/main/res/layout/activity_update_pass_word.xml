@@ -34,8 +34,7 @@
                 android:layout_height="48dp"
                 android:drawableStart="@drawable/ic_baseline_account_circle_24"
                 android:drawablePadding="10dp"
-                android:inputType="textPassword"
-                android:focusedByDefault="false"/>
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -50,9 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:drawableStart="@drawable/ic_baseline_email_24"
-                android:drawablePadding="10dp"
-                android:focusedByDefault="false"
-                android:inputType="textPassword"/>
+                android:drawablePadding="10dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,8 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:drawableStart="@drawable/ic_baseline_smartphone_24"
-            android:drawablePadding="10dp"
-            android:focusedByDefault="false"/>
+            android:drawablePadding="10dp" />
 
     </com.google.android.material.textfield.TextInputLayout>
     <Button

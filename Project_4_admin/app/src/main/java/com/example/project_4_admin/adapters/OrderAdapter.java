@@ -26,19 +26,15 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.LinkedList;
 import java.util.List;
 
+
+
 public class OrderAdapter extends RecyclerView.Adapter<OrderViewHolder> {
     List<Order> orderList;
     Context context;
 
-    String phone;
-
     public OrderAdapter(List<Order> orderList, Context context) {
         this.orderList = orderList;
         this.context = context;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     @NonNull
@@ -53,44 +49,21 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderViewHolder> {
     public void onBindViewHolder(@NonNull OrderViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.txtOrderId.setText("#" + orderList.get(position).getOrderID());
         holder.txtOrderStatus.setText(Common.convertCodeToStatus(orderList.get(position).getStatus()));
-        holder.txtPhone.setText(displayPhone(orderList.get(position).getBuyerId()));
+        holder.txtPhone.setText(orderList.get(position).getBuyerPhone());
         holder.txtTime.setText(orderList.get(position).getTimeOrder());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(holder.itemView.getContext(), OrderDetailActivity.class);
-                intent.putExtra("object",orderList.get(position));
-                context.startActivity(intent);
-            }
-        });
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(holder.itemView.getContext(), OrderDetailActivity.class);
+//                //intent.putExtra("object",orderList.get(position));
+//                context.startActivity(intent);
+//            }
+//        });
     }
 
     @Override
     public int getItemCount() {
         return orderList.size();
-    }
-
-    public String displayPhone(String user_id) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot data : snapshot.getChildren()){
-                    try{
-                        if(data.getKey().equals(user_id)){
-                            setPhone(data.child("phone").getValue().toString());
-                        }
-                    }catch (NumberFormatException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        return phone;
     }
 }

@@ -23,13 +23,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LoginActivity extends AppCompatActivity {
     EditText email, password;
     TextView registerNowBtn, forgetBtn;
     Button loginBtn;
 
     FirebaseAuth auth;
-    DatabaseReference referenceUsers = FirebaseDatabase.getInstance().getReference("Users");
+    FirebaseDatabase db = FirebaseDatabase.getInstance();
+    DatabaseReference referenceUsers = db.getReference("Users");
 
     SharedPreferences sharedPreferences;
     static String SHARED_PREF_NAME = "myPref";

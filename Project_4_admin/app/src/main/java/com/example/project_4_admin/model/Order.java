@@ -5,24 +5,39 @@ import java.util.List;
 
 public class Order implements Serializable {
     int orderID, status;
-    String buyerId, buyerName;
+    String buyerId, buyerName, buyerPhone;
     Double total;
     String siteAddress, note;
     String TimeOrder;
     String TimeTaken;
     List<OrderDetail> Details;
 
-    public Order(int orderID, String buyerId, String buyerName, Double total, String siteAddress, String note, String timeOrder, List<OrderDetail> details) {
+    public Order(int orderID, String buyerId, String buyerName,String buyerPhone, Double total, String siteAddress, String note, String timeOrder, List<OrderDetail> details) {
         this.orderID = orderID;
         this.buyerId = buyerId;
         this.status = 1; //0: cancelled, 2:Processing, 3:Paid
         this.buyerName = buyerName;
+        this.buyerPhone = buyerPhone;
         this.total = total;
         this.siteAddress = siteAddress;
         this.note = note;
         this.TimeOrder = timeOrder;
         this.TimeTaken = "";
         this.Details = details;
+    }
+
+    public Order(int orderID, int status, String buyerId, String buyerName, String buyerPhone, Double total, String siteAddress, String note, String timeOrder, String timeTaken, List<OrderDetail> details) {
+        this.orderID = orderID;
+        this.status = status;
+        this.buyerId = buyerId;
+        this.buyerName = buyerName;
+        this.buyerPhone = buyerPhone;
+        this.total = total;
+        this.siteAddress = siteAddress;
+        this.note = note;
+        TimeOrder = timeOrder;
+        TimeTaken = timeTaken;
+        Details = details;
     }
 
     public int getId() {
@@ -47,6 +62,14 @@ public class Order implements Serializable {
 
     public void setBuyerName(String buyerName) {
         this.buyerName = buyerName;
+    }
+
+    public String getBuyerPhone() {
+        return buyerPhone;
+    }
+
+    public void setBuyerPhone(String buyerPhone) {
+        this.buyerPhone = buyerPhone;
     }
 
     public Double getTotal() {

@@ -1,18 +1,17 @@
-package com.example.project_4.service;
+package com.example.project_4_admin.service;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
-import com.example.project_4.R;
-import com.example.project_4.Store_dashboardActivity;
+import com.example.project_4_admin.Manager_dashboardActivity;
+import com.example.project_4_admin.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -25,7 +24,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
     private void sendNotification(RemoteMessage remoteMessage) {
         RemoteMessage.Notification notification = remoteMessage.getNotification();
-        Intent intent = new Intent(this, Store_dashboardActivity.class);
+        Intent intent = new Intent(this, Manager_dashboardActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
 

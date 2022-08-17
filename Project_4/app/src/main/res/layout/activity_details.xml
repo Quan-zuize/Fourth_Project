@@ -55,7 +55,7 @@
 
     <TextView
         android:id="@+id/menu_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
@@ -63,6 +63,7 @@
         android:textColor="#091020"
         android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/menu_price"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menu_img" />
 
@@ -84,17 +85,14 @@
         android:id="@+id/menu_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="24dp"
         android:text="50.000 đ"
         android:textColor="#FF5D5D"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/menu_des"
+        app:layout_constraintBottom_toBottomOf="@+id/menu_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.827"
-        app:layout_constraintStart_toEndOf="@+id/menu_name"
-        app:layout_constraintTop_toBottomOf="@+id/menu_img"
+        app:layout_constraintTop_toTopOf="@+id/menu_name"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button

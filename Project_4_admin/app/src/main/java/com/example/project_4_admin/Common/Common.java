@@ -1,5 +1,9 @@
 package com.example.project_4_admin.Common;
 
+
+import com.example.project_4_admin.Remote.APIService;
+import com.example.project_4_admin.Remote.RetrofitClient;
+
 public class Common {
     public static String convertCodeToStatus(int status) {
         String rs = "";
@@ -25,15 +29,21 @@ public class Common {
     public static int convertStatusToCode(int code){
         int status = 0;
         switch (code) {
-            case 2:
+            case 1:
                 status = 2;
                 break;
-            case 3:
+            case 2:
                 status = 3;
                 break;
             default:
                 break;
         }
         return status;
+    }
+
+    private static final String BASE_URL = "https://fcm.googleapis.com/";
+
+    public static APIService getFCMService(){
+        return RetrofitClient.getClient(BASE_URL).create(APIService.class);
     }
 }

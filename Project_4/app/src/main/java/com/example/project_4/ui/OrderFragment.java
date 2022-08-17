@@ -53,7 +53,7 @@ public class OrderFragment extends Fragment {
     OrderAdapter orderAdapter;
 
     int order_id;
-    String buyer_name;
+    String buyer_name, buyer_phone;
     String site_address, note, timeOrder;
     Double total;
 
@@ -120,6 +120,7 @@ public class OrderFragment extends Fragment {
                             order_id = Integer.parseInt(snapshot.child("orderID").getValue().toString());
                             //buyer_id = snapshot.child("buyerId").getValue(String.class);
                             buyer_name = snapshot.child("buyerName").getValue(String.class);
+                            buyer_phone = snapshot.child("buyerPhone").getValue(String.class);
                             total = Double.valueOf(snapshot.child("total").getValue().toString());
                             site_address = snapshot.child("siteAddress").getValue(String.class);
                             note = snapshot.child("note").getValue(String.class);
@@ -129,7 +130,7 @@ public class OrderFragment extends Fragment {
                                 OrderDetail orderDetail = data.getValue(OrderDetail.class);
                                 listDetails.add(orderDetail);
                             }
-                            Order order = new Order(order_id,userId,buyer_name,total,site_address,note, timeOrder,listDetails);
+                            Order order = new Order(order_id,userId,buyer_name,buyer_phone,total,site_address,note, timeOrder,listDetails);
                             orderList.add(0,order);
                             recyclerView.setAdapter(orderAdapter);
                             orderAdapter.notifyDataSetChanged();
