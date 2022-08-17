@@ -45,7 +45,8 @@ public class DetailsActivity extends AppCompatActivity {
         comboFood = findViewById(R.id.combo_food);
         menuDes = findViewById(R.id.menu_des);
 //        btnCart = findViewById(R.id.button);
-//
+        comboFood = findViewById(R.id.combo_food);
+
 //        minusImg = findViewById(R.id.imageButton1);
 //        plusImg = findViewById(R.id.imageButton2);
 //        textView = findViewById(R.id.numCart);

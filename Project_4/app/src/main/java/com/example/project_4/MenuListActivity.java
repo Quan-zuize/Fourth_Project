@@ -2,6 +2,7 @@ package com.example.project_4;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,15 +23,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuListActivity extends AppCompatActivity {
+    private ConstraintLayout mConstraintLayout;
     TextView txtCat;
 
     Menu getMenu;
+    String search = null;
     String categoryName = "";
     private List<Menu> menuList = new ArrayList<>();
+    private List<String> titleList = new ArrayList<>();
 
     MenuListAdapter adapter;
     int menu_id;
-//    ArrayList<String> imgList = new ArrayList<>();
+
     RecyclerView food_recycler;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference db = database.getReference("Menu");
@@ -40,6 +44,9 @@ public class MenuListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_list);
 
+//        mConstraintLayout = findViewById(R.id.constraintLayoutMenu);
+//        mConstraintLayout.setBackgroundResource(R.drawable.bg3);
+
         food_recycler = findViewById(R.id.food_recycler);
         txtCat = findViewById(R.id.textCat);
 
@@ -48,12 +55,13 @@ public class MenuListActivity extends AppCompatActivity {
                 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         food_recycler.setLayoutManager(layoutManager);
         Intent data = getIntent();
+        search = data.getStringExtra("search");
 
         String[] category = (String[]) data.getSerializableExtra("category");
         categoryName = String.join(" ",category);
 
         txtCat.setText(categoryName);
-        if (category == null) {
+        if (category == null && search == null) {
             db.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {

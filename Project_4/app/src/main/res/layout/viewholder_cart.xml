@@ -69,17 +69,20 @@
 
     <TextView
         android:id="@+id/totalEachItem"
-        android:layout_width="wrap_content"
+        android:gravity="right"
+        android:layout_alignParentEnd="true"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
+        android:layout_marginStart="30dp"
         android:text="0"
         android:textColor="#373b54"
+
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/plusCartBtn"
         app:layout_constraintStart_toEndOf="@+id/plusCartBtn"
         app:layout_constraintTop_toTopOf="@+id/plusCartBtn"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.666" />
 
     <TextView
         android:id="@+id/textView2"
