@@ -14,6 +14,12 @@
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".MenuUpdateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MenuAddActivity"
+            android:exported="false" />
+        <activity
             android:name=".OrderDetailActivity"
             android:exported="false" />
         <activity
@@ -50,18 +56,18 @@
         <service
             android:name=".service.SoundService"
             android:enabled="true" />
-
-        <service android:name=".service.MyFirebaseService"
+        <service
+            android:name=".service.MyFirebaseService"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"></action>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
-        <service android:name=".service.MyFirebaseMessaging"
+        <service
+            android:name=".service.MyFirebaseMessaging"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"></action>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 

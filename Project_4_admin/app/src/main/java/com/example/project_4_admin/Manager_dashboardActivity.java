@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.project_4_admin.model.Token;
+import com.example.project_4_admin.ui.MenuFragment;
 import com.example.project_4_admin.ui.OrderManagerFragment;
 import com.example.project_4_admin.ui.ProfileManagerFragment;
 import com.example.project_4_admin.ui.StoreFragment;
@@ -93,11 +94,11 @@ public class Manager_dashboardActivity extends AppCompatActivity {
                         }
                         break;
                     case R.id.navigation_cart_mana:
-//                        if (!checkLogin()) {
-//                            fragment = new CartFragment();
-//                        } else {
-//                            redirect();
-//                        }
+                        if (!checkLogin()) {
+                            fragment = new MenuFragment();
+                        } else {
+                            redirect();
+                        }
                         break;
                     case R.id.navigation_profile_mana:
                         fragment = new ProfileManagerFragment();
