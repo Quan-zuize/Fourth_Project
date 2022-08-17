@@ -13,7 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:targetApi="31">
+<<<<<<< Updated upstream
 
+=======
+        <activity
+            android:name=".MenuUpdateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MenuAddActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OrderDetailActivity"
+            android:exported="false" />
+>>>>>>> Stashed changes
         <activity
             android:name=".SignUpActivity"
             android:exported="false" />
@@ -32,7 +44,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< Updated upstream
         <service android:name=".service.SoundService"  android:enabled="true"></service>
+=======
+
+        <service
+            android:name=".service.SoundService"
+            android:enabled="true" />
+        <service
+            android:name=".service.MyFirebaseService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".service.MyFirebaseMessaging"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+>>>>>>> Stashed changes
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

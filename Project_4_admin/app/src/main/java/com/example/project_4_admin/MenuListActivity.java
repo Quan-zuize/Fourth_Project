@@ -37,20 +37,28 @@ public class MenuListActivity extends AppCompatActivity {
 
         food_recycler = findViewById(R.id.food_recycler);
 
-        adapter = new MenuListAdapter(menuList,getApplicationContext());
+        adapter = new MenuListAdapter(menuList, getApplicationContext());
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         food_recycler.setLayoutManager(layoutManager);
         Intent data = getIntent();
         String[] category = (String[]) data.getSerializableExtra("category");
+<<<<<<< Updated upstream
         if (category == null) {
             db.addValueEventListener(new ValueEventListener() {
+=======
+
+        for (String item : category) {
+            categoryName = item;
+            txtCat.setText(categoryName);
+            db.orderByChild("Category").equalTo(categoryName).addListenerForSingleValueEvent(new ValueEventListener() {
+>>>>>>> Stashed changes
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     menuList.clear();
                     for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                         menu_id = Integer.parseInt(childSnapshot.getKey());
-                        db.child(String.valueOf(menu_id)).addListenerForSingleValueEvent(new ValueEventListener() {
+                        db.child(String.valueOf(menu_id)).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 String title = snapshot.child("Title").getValue(String.class);
@@ -58,9 +66,11 @@ public class MenuListActivity extends AppCompatActivity {
                                 Double price = Double.valueOf(snapshot.child("Price").getValue(String.class));
                                 String img = snapshot.child("Image").getValue(String.class);
                                 String des = snapshot.child("Description").getValue(String.class);
-                                getMenu = new Menu(menu_id, title, category, price, img, des);                                menuList.add(getMenu);
+                                getMenu = new Menu(menu_id, title, category, price, img, des);
+                                menuList.add(getMenu);
                                 food_recycler.setAdapter(adapter);
                                 adapter.notifyDataSetChanged();
+
                             }
 
                             @Override
@@ -76,44 +86,6 @@ public class MenuListActivity extends AppCompatActivity {
 
                 }
             });
-        } else {
-            for (String item : category) {
-                categoryName = item;
-                db.orderByChild("Category").equalTo(categoryName).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        menuList.clear();
-                        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                            menu_id = Integer.parseInt(childSnapshot.getKey());
-                            db.child(String.valueOf(menu_id)).addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    String title = snapshot.child("Title").getValue(String.class);
-                                    String category = snapshot.child("Category").getValue(String.class);
-                                    Double price = Double.valueOf(snapshot.child("Price").getValue(String.class));
-                                    String img = snapshot.child("Image").getValue(String.class);
-                                    String des = snapshot.child("Description").getValue(String.class);
-                                    getMenu = new Menu(menu_id, title, category, price, img, des);
-                                    menuList.add(getMenu);
-                                    food_recycler.setAdapter(adapter);
-                                    adapter.notifyDataSetChanged();
-
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            }
         }
     }
 }

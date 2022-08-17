@@ -256,7 +256,6 @@ public class StoreFragment extends Fragment {
     }
 
     private void setPopularRecyclerViewFood() {
-
         popularFood.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         popularFood.setHasFixedSize(true);
         popularFood.setNestedScrollingEnabled(false);

@@ -8,7 +8,12 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+<<<<<<< Updated upstream
 import com.example.project_4_admin.service.ListenOrder;
+=======
+import com.example.project_4_admin.model.Token;
+import com.example.project_4_admin.ui.MenuFragment;
+>>>>>>> Stashed changes
 import com.example.project_4_admin.ui.OrderManagerFragment;
 import com.example.project_4_admin.ui.StoreFragment;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
@@ -65,12 +70,21 @@ public class Manager_dashboardActivity extends AppCompatActivity {
                             redirect();
                         }
                         break;
+<<<<<<< Updated upstream
                     case R.id.navigation_cart:
 //                        if (!checkLogin()) {
 //                            fragment = new CartFragment();
 //                        } else {
 //                            redirect();
 //                        }
+=======
+                    case R.id.navigation_cart_mana:
+                        if (!checkLogin()) {
+                            fragment = new MenuFragment();
+                        } else {
+                            redirect();
+                        }
+>>>>>>> Stashed changes
                         break;
                     case R.id.navigation_profile:
 //                        fragment = new ProfileFragment();
