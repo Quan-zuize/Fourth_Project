@@ -2,6 +2,7 @@ package com.example.project_4;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,15 +23,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuListActivity extends AppCompatActivity {
+    private ConstraintLayout mConstraintLayout;
     TextView txtCat;
 
     Menu getMenu;
+    String search = null;
     String categoryName = "";
     private List<Menu> menuList = new ArrayList<>();
+    private List<String> titleList = new ArrayList<>();
 
     MenuListAdapter adapter;
     int menu_id;
-//    ArrayList<String> imgList = new ArrayList<>();
+
     RecyclerView food_recycler;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference db = database.getReference("Menu");
@@ -40,6 +44,9 @@ public class MenuListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_list);
 
+//        mConstraintLayout = findViewById(R.id.constraintLayoutMenu);
+//        mConstraintLayout.setBackgroundResource(R.drawable.bg3);
+
         food_recycler = findViewById(R.id.food_recycler);
         txtCat = findViewById(R.id.textCat);
 
@@ -48,45 +55,17 @@ public class MenuListActivity extends AppCompatActivity {
                 = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         food_recycler.setLayoutManager(layoutManager);
         Intent data = getIntent();
+        search = data.getStringExtra("search");
 
         String[] category = (String[]) data.getSerializableExtra("category");
-        categoryName = String.join(" ",category);
+        if(category != null){
+            categoryName = String.join(" ",category);
+            txtCat.setText(categoryName);
+        }else{
+            txtCat.setText("");
+        }
 
-        txtCat.setText(categoryName);
-        if (category == null) {
-            db.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    menuList.clear();
-                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                        menu_id = Integer.parseInt(childSnapshot.getKey());
-                        db.child(String.valueOf(menu_id)).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                String title = snapshot.child("Title").getValue(String.class);
-                                String category = snapshot.child("Category").getValue(String.class);
-                                Double price = Double.valueOf(snapshot.child("Price").getValue(String.class));
-                                String img = snapshot.child("Image").getValue(String.class);
-                                String des = snapshot.child("Description").getValue(String.class);
-                                getMenu = new Menu(menu_id, title, category, price, img, des);                                menuList.add(getMenu);
-                                food_recycler.setAdapter(adapter);
-                                adapter.notifyDataSetChanged();
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        } else {
+        if (category != null && search == null) {
             for (String item : category) {
                 categoryName = item;
                 db.orderByChild("Category").equalTo(categoryName).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -124,6 +103,44 @@ public class MenuListActivity extends AppCompatActivity {
                     }
                 });
             }
+        } else {
+            db.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    menuList.clear();
+                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                        String title = childSnapshot.child("Title").getValue(String.class).toLowerCase();
+                        if (title.contains(search)) {
+                            menu_id = Integer.parseInt(childSnapshot.getKey());
+                            db.child(String.valueOf(menu_id)).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                    String title = snapshot.child("Title").getValue(String.class);
+                                    String category = snapshot.child("Category").getValue(String.class);
+                                    Double price = Double.valueOf(snapshot.child("Price").getValue(String.class));
+                                    String img = snapshot.child("Image").getValue(String.class);
+                                    String des = snapshot.child("Description").getValue(String.class);
+                                    getMenu = new Menu(menu_id, title, category, price, img, des);
+                                    menuList.add(getMenu);
+                                    food_recycler.setAdapter(adapter);
+                                    adapter.notifyDataSetChanged();
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
     }
 }

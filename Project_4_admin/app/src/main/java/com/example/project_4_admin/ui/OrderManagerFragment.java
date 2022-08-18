@@ -202,7 +202,7 @@ public class OrderManagerFragment extends Fragment {
                             Token token = postSnapShot.getValue(Token.class);
 
                             //Make raw payload
-                            Notification notification = new Notification("Anya Shop", "Đơn của bạn #" + item.getOrderID() + " gì gì đấy");
+                            Notification notification = new Notification("Anya Shop", "Đơn của bạn #" + item.getOrderID() + " đã cập nhật : "+spinner.getText().toString());
                             Sender content = new Sender(token.getToken(), notification);
 
                             mService.sendNotification(content).enqueue(new Callback<MyResponse>() {

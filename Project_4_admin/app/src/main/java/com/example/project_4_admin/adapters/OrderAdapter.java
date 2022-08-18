@@ -52,14 +52,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderViewHolder> {
         holder.txtPhone.setText(orderList.get(position).getBuyerPhone());
         holder.txtTime.setText(orderList.get(position).getTimeOrder());
 
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(holder.itemView.getContext(), OrderDetailActivity.class);
-//                //intent.putExtra("object",orderList.get(position));
-//                context.startActivity(intent);
-//            }
-//        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(holder.itemView.getContext(), OrderDetailActivity.class);
+                intent.putExtra("orderID",  orderList.get(position).getOrderID());
+                intent.putExtra("note",  orderList.get(position).getNote());
+                intent.putExtra("total", orderList.get(position).getTotal());
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     @Override

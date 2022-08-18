@@ -14,19 +14,15 @@
         android:layout_margin="10dp"
         android:textAlignment="center">
 
-        <EditText
+        <com.mancj.materialsearchbar.MaterialSearchBar
             android:id="@+id/search_bar"
-            android:layout_width="390dp"
+            style="@style/MaterialSearchBarLight"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_bg"
-            android:drawableRight="@drawable/ic_baseline_search_24"
-            android:fontFamily="@font/amita"
-            android:hint="Enjoy Food &amp; Drink now~"
-            android:padding="10dp"
-            android:textColorHint="#455A64"
-            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:mt_hint="Enjoy Food &amp; Drink now~"/>
 
 
         <TextView

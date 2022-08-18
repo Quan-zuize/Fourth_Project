@@ -217,7 +217,6 @@ public class CartFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot postSnapShot : snapshot.getChildren()){
                     if(Objects.equals(postSnapShot.getKey(), shop_manager_id)){
-                        int a = 0;
                         Token serverToken = postSnapShot.getValue(Token.class);
 
                         //Create raw value to send
@@ -227,11 +226,14 @@ public class CartFragment extends Fragment {
                         mService.sendNotification(content).enqueue(new Callback<MyResponse>() {
                             @Override
                             public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                                if(response.body().success == 1){
-                                    Toast.makeText(getContext(), "Cảm ơn bạn rất nhiều ^^", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(CartFragment.this.getContext(), Store_dashboardActivity.class));
-                                }else{
-                                    Toast.makeText(getContext(),"Lỗi đặt hàng!", Toast.LENGTH_SHORT).show();
+                                //Only run when get result
+                                if(response.code() == 200){
+                                    if(response.body().success == 1){
+                                        Toast.makeText(getContext(), "Cảm ơn bạn rất nhiều ^^", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(CartFragment.this.getContext(), Store_dashboardActivity.class));
+                                    }else{
+                                        Toast.makeText(getContext(),"Lỗi đặt hàng!", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             }
 

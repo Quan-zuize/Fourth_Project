@@ -3,36 +3,45 @@ package com.example.project_4_admin.model;
 import java.io.Serializable;
 
 public class OrderDetail implements Serializable {
-    int orderId;
-    int menu_title;
+    int menuId;
+    String menuTitle;
     int quantity;
     double price;
     double total;
 
-    public OrderDetail(int menu_title, int quantity, double price) {
-        this.menu_title = menu_title;
+    public OrderDetail() {
+    }
+
+    public OrderDetail(int menuId, String menuTitle, int quantity, double price) {
+        this.menuId = menuId;
+        this.menuTitle = menuTitle;
         this.quantity = quantity;
         this.price = price;
         this.total = price * quantity;
     }
 
-    public OrderDetail() {
+    public int getMenuId() {
+        return menuId;
     }
 
-    public int getOrderId() {
-        return orderId;
+    public void setMenuId(int menuId) {
+        this.menuId = menuId;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+//    public int getOrderId() {
+//        return orderId;
+//    }
+//
+//    public void setOrderId(int orderId) {
+//        this.orderId = orderId;
+//    }
+
+    public String getMenuTitle() {
+        return menuTitle;
     }
 
-    public int getMenu_title() {
-        return menu_title;
-    }
-
-    public void setMenu_title(int menu_title) {
-        this.menu_title = menu_title;
+    public void setMenuTitle(String menuTitle) {
+        this.menuTitle = menuTitle;
     }
 
     public int getQuantity() {

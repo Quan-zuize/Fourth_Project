@@ -10,11 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.project_4.Interface.ItemClickListener;
 import com.example.project_4.R;
 
-public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class OrderViewHolder extends RecyclerView.ViewHolder {
     public TextView txtOrderId, txtOrderStatus,txtSite, txtTime;
 
-
-    private ItemClickListener itemClickListener;
 
     public OrderViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -23,15 +21,5 @@ public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnC
         txtOrderStatus = itemView.findViewById(R.id.order_status);
         txtSite = itemView.findViewById(R.id.order_site);
         txtTime = itemView.findViewById(R.id.order_time);
-        itemView.setOnClickListener(this);
-    }
-
-    public void setItemClickListener(ItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
-    }
-
-    @Override
-    public void onClick(View view) {
-        itemClickListener.onClick(view,getAdapterPosition(),false);
     }
 }

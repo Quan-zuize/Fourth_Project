@@ -193,6 +193,7 @@ public class MenuAddActivity extends AppCompatActivity {
                                                     db.child(String.valueOf(menu_id)).child("Image").setValue(uri.toString());
                                                     db.child(String.valueOf(menu_id)).child("Date Add").setValue(dtf.format(now));
                                                     Toast.makeText(MenuAddActivity.this, "Upload Successfully!!!", Toast.LENGTH_SHORT).show();
+                                                    startActivity(new Intent(getBaseContext(), MenuListActivity.class));
                                                 }
                                             });
                                         }
@@ -205,13 +206,13 @@ public class MenuAddActivity extends AppCompatActivity {
                                     });
 
                         } else {
-
                             uploadTask = imagename.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                         @Override
                                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                             imagename.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                                 @Override
                                                 public void onSuccess(Uri uri) {
+                                                    db.child(String.valueOf(menu_id)).child("menu_id").setValue(menu_id);
                                                     db.child(String.valueOf(menu_id)).child("Title").setValue(title);
                                                     db.child(String.valueOf(menu_id)).child("Category").setValue(category);
                                                     db.child(String.valueOf(menu_id)).child("Price").setValue(price);
@@ -219,7 +220,8 @@ public class MenuAddActivity extends AppCompatActivity {
                                                     db.child(String.valueOf(menu_id)).child("Image").setValue(uri.toString());
                                                     db.child(String.valueOf(menu_id)).child("Date Add").setValue(dtf.format(now));
                                                     Toast.makeText(MenuAddActivity.this, "Upload Successfully!!!", Toast.LENGTH_SHORT).show();
-                                                    finish();
+                                                    //finish();
+                                                    startActivity(new Intent(getBaseContext(), MenuListActivity.class));
                                                 }
                                             });
                                         }
@@ -235,25 +237,6 @@ public class MenuAddActivity extends AppCompatActivity {
                         Toast.makeText(MenuAddActivity.this, "No file selected", Toast.LENGTH_SHORT).show();
                     }
                 }
-
-            }
-        });
-        db.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    String title = childSnapshot.child("Title").getValue(String.class);
-                    String category = childSnapshot.child("Category").getValue(String.class);
-                    if (category.equals("Combo")) {
-
-                    } else {
-                        titleList.add(title);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
@@ -285,6 +268,25 @@ public class MenuAddActivity extends AppCompatActivity {
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                    String title = childSnapshot.child("Title").getValue(String.class);
+                    String category = childSnapshot.child("Category").getValue(String.class);
+                    if (category.equals("Combo")) {
+                    } else {
+                        titleList.add(title);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
