@@ -9,6 +9,10 @@
             <type value="VIRTUAL_DEVICE_PATH" />
             <value value="C:\Users\ADMIN\.android\avd\Pixel_4_XL_API_26.avd" />
           </Key>
+           <Key>
+            <type value="VIRTUAL_DEVICE_PATH" />
+            <value value="C:\Users\Minh\.android\avd\Pixel_4_XL_API_31_1.avd" />
+          </Key>
         </deviceKey>
       </Target>
     </runningDeviceTargetSelectedWithDropDown>
