@@ -27,6 +27,7 @@ import com.example.project_4_admin.model.User;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
     EditText fullname, email, phone, password, conPassword;
@@ -36,6 +37,9 @@ public class SignUpActivity extends AppCompatActivity {
     FirebaseAuth auth;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://shopdemo-8c277-default-rtdb.firebaseio.com/");
     FirebaseUser firebaseUser;
+
+    String pattern = "(0[3|5|7|8|9])+([0-9]{8})";
+    Pattern r = Pattern.compile(pattern);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +81,12 @@ public class SignUpActivity extends AppCompatActivity {
         } else if (phone.isEmpty()) {
             this.phone.setError("Phone is required !");
             this.phone.requestFocus();
+        } else if (phone.length() != 10) {
+            this.phone.setError("Phone length 10 !");
+            this.phone.requestFocus();
+        }else if(!r.matcher(this.phone.getText().toString().trim()).find()){
+            this.phone.setError("Phone not match");
+            this.phone.requestFocus();
         } else if (pass.isEmpty()) {
             this.password.setError("Password is required !");
             this.password.requestFocus();
@@ -89,7 +99,7 @@ public class SignUpActivity extends AppCompatActivity {
         } else if (!conPass.equals(pass)) {
             this.conPassword.setError("Password Are Not Matching !");
             this.conPassword.requestFocus();
-        } else {
+        }else {
             databaseReference.child("Users").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -107,7 +117,8 @@ public class SignUpActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(SignUpActivity.this, "User Registered Successfully ", Toast.LENGTH_SHORT).show();
                                     //insert to db
-                                    User userObject = new User(email, phone, fullname);
+                                    User userObject = new User(fullname, email, phone);
+                                    firebaseUser = auth.getCurrentUser();
                                     databaseReference.child("Users").child(firebaseUser.getUid()).setValue(userObject);
                                     startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                                 } else {

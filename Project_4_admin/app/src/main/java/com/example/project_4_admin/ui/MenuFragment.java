@@ -79,7 +79,7 @@ public class MenuFragment extends Fragment {
                             Double price = Double.valueOf(snapshot.child("Price").getValue(String.class));
                             String img = snapshot.child("Image").getValue(String.class);
                             String des = snapshot.child("Description").getValue(String.class);
-                            getMenu = new Menu(menu_id, title, category, price, img, des);
+                            getMenu = new Menu(Integer.parseInt(snapshot.getKey()), title, category, price, img, des);
                             menuList.add(getMenu);
                             menu_recycler.setAdapter(adapter);
                             adapter.notifyDataSetChanged();

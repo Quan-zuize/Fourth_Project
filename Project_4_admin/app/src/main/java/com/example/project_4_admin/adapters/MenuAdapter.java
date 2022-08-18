@@ -32,6 +32,7 @@ import java.util.List;
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder>{
     private List<Menu> menuList;
     private Context context;
+    int menu_id;
 
     public MenuAdapter(List<Menu> menuList, Context context) {
         this.menuList = menuList;
@@ -48,7 +49,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder,@SuppressLint("RecyclerView") int position) {
         Menu menu = menuList.get(position);
-        int menu_id = menu.getMenu_id();
         Glide.with(holder.itemView.getContext()).load(menu.getImage_src()).into(holder.mImage);
         holder.mFoodName.setText(menu.getTitle());
         holder.mFoodPrice.setText(String.format("%,.0f", menu.getPrice()).concat(" đ"));
@@ -68,6 +68,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder>{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MenuUpdateActivity.class);
+                menu_id = menu.getMenu_id();
                 intent.putExtra("menu_id", menu_id);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
