@@ -12,20 +12,6 @@ public class Order implements Serializable {
     String TimeTaken;
     List<OrderDetail> Details;
 
-    public Order(int orderID, String buyerId, String buyerName,String buyerPhone, Double total, String siteAddress, String note, String timeOrder, List<OrderDetail> details) {
-        this.orderID = orderID;
-        this.buyerId = buyerId;
-        this.status = 1; //0: cancelled, 2:Processing, 3:Paid
-        this.buyerName = buyerName;
-        this.buyerPhone = buyerPhone;
-        this.total = total;
-        this.siteAddress = siteAddress;
-        this.note = note;
-        this.TimeOrder = timeOrder;
-        this.TimeTaken = "";
-        this.Details = details;
-    }
-
     public Order(int orderID, int status, String buyerId, String buyerName, String buyerPhone, Double total, String siteAddress, String note, String timeOrder, String timeTaken, List<OrderDetail> details) {
         this.orderID = orderID;
         this.status = status;

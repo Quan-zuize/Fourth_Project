@@ -52,9 +52,9 @@ public class OrderFragment extends Fragment {
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     OrderAdapter orderAdapter;
 
-    int order_id;
-    String buyer_name, buyer_phone;
-    String site_address, note, timeOrder;
+    int order_id, status;
+    String buyer_name, buyer_phone, buyer_id;
+    String site_address, note, timeOrder, timeTaken;
     Double total;
 
     @Override
@@ -118,22 +118,24 @@ public class OrderFragment extends Fragment {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             order_id = Integer.parseInt(snapshot.child("orderID").getValue().toString());
-                            //buyer_id = snapshot.child("buyerId").getValue(String.class);
+                            buyer_id = snapshot.child("buyerId").getValue(String.class);
                             buyer_name = snapshot.child("buyerName").getValue(String.class);
                             buyer_phone = snapshot.child("buyerPhone").getValue(String.class);
+                            status = snapshot.child("status").getValue(Integer.class);
                             total = Double.valueOf(snapshot.child("total").getValue().toString());
                             site_address = snapshot.child("siteAddress").getValue(String.class);
                             note = snapshot.child("note").getValue(String.class);
                             timeOrder = snapshot.child("timeOrder").getValue(String.class);
+                            timeTaken = snapshot.child("timeTaken").getValue(String.class);
 
                             for(DataSnapshot data : snapshot.child("details").getChildren()){
                                 OrderDetail orderDetail = data.getValue(OrderDetail.class);
                                 listDetails.add(orderDetail);
                             }
-                            Order order = new Order(order_id,userId,buyer_name,buyer_phone,total,site_address,note, timeOrder,listDetails);
+                            Order order = new Order(order_id, status, buyer_id, buyer_name, buyer_phone, total, site_address, note, timeOrder, timeTaken, listDetails);
                             orderList.add(0,order);
-                            recyclerView.setAdapter(orderAdapter);
                             orderAdapter.notifyDataSetChanged();
+                            recyclerView.setAdapter(orderAdapter);
                         }
 
                         @Override

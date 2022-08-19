@@ -29,6 +29,20 @@ public class Order implements Serializable {
         this.Details = details;
     }
 
+    public Order(int orderID, int status, String buyerId, String buyerName, String buyerPhone, Double total, String siteAddress, String note, String timeOrder, String timeTaken, List<OrderDetail> details) {
+        this.orderID = orderID;
+        this.status = status;
+        this.buyerId = buyerId;
+        this.buyerName = buyerName;
+        this.buyerPhone = buyerPhone;
+        this.total = total;
+        this.siteAddress = siteAddress;
+        this.note = note;
+        TimeOrder = timeOrder;
+        TimeTaken = timeTaken;
+        Details = details;
+    }
+
     public int getId() {
         return orderID;
     }

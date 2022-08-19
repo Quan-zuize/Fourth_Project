@@ -54,7 +54,7 @@ public class Common {
         return RetrofitClient.getClient(BASE_URL).create(APIService.class);
     }
 
-    public static String getDate(long time){
+    public static String getDate(){
 //        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
 //        calendar.setTimeInMillis(time);
         LocalDateTime now = LocalDateTime.now();

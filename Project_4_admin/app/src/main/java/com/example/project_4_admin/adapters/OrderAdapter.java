@@ -44,6 +44,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderViewHolder> {
         holder.txtOrderStatus.setText(Common.convertCodeToStatus(orderList.get(position).getStatus()));
         holder.txtPhone.setText(orderList.get(position).getBuyerPhone());
         holder.txtTimeOrder.setText(orderList.get(position).getTimeOrder());
+        holder.txtTimeTaken.setText(orderList.get(position).getTimeTaken());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

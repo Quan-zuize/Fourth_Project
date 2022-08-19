@@ -119,6 +119,7 @@ public class OrderManagerFragment extends Fragment {
                             //site_address = snapshot.child("siteAddress").getValue(String.class);
                             note = snapshot.child("note").getValue(String.class);
                             timeOrder = snapshot.child("timeOrder").getValue(String.class);
+                            timeTaken = snapshot.child("timeTaken").getValue(String.class);
 
                             for (DataSnapshot data : snapshot.child("details").getChildren()) {
                                 OrderDetail orderDetail = data.getValue(OrderDetail.class);
@@ -169,6 +170,9 @@ public class OrderManagerFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 status = Common.convertStatusToCode(spinner.getSelectedIndex());
+                if(status == 3){
+                    item.setTimeTaken(Common.getDate());
+                }
                 item.setStatus(status);
                 requests.child(localKey).setValue(item);
 
