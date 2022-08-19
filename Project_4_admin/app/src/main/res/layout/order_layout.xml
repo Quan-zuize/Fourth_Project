@@ -56,16 +56,6 @@
                 android:gravity="center_vertical|start"
                 android:textStyle="bold"
                 />
-            <TextView
-                android:id="@+id/paid_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="Thời gian nhận : 7h25 13/08/2022"
-                android:gravity="center_vertical|start"
-                android:textStyle="bold"
-                android:visibility="gone"
-                />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

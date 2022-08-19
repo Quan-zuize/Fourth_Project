@@ -1,13 +1,11 @@
 package com.example.project_4.Viewholder;
 
 import android.view.View;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.project_4.Interface.ItemClickListener;
 import com.example.project_4.R;
 
 public class OrderViewHolder extends RecyclerView.ViewHolder {

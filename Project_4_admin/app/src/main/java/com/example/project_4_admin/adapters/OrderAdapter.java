@@ -43,8 +43,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderViewHolder> {
         holder.txtOrderId.setText("#" + orderList.get(position).getOrderID());
         holder.txtOrderStatus.setText(Common.convertCodeToStatus(orderList.get(position).getStatus()));
         holder.txtPhone.setText(orderList.get(position).getBuyerPhone());
-        holder.txtTimeOrder.setText(orderList.get(position).getTimeOrder());
-        holder.txtTimeTaken.setText(orderList.get(position).getTimeTaken());
+        holder.txtTime.setText(orderList.get(position).getTimeOrder());
+        if(orderList.get(position).getStatus() == 3){
+            holder.txtTime.setText("Thời gian : " + orderList.get(position).getTimeTaken());
+        }else {
+            holder.txtTime.setText("Thời gian : " + orderList.get(position).getTimeOrder());
+
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

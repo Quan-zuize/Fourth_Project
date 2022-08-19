@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.project_4.Common.Common;
 import com.example.project_4.OrderDetailActivity;
 import com.example.project_4.R;
-import com.example.project_4.Viewholder.CartViewHolder;
 import com.example.project_4.Viewholder.OrderViewHolder;
 import com.example.project_4.model.Order;
 
@@ -42,7 +41,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderViewHolder> {
         holder.txtOrderId.setText("#" + orderList.get(position).getOrderID());
         holder.txtOrderStatus.setText(Common.convertCodeToStatus(orderList.get(position).getStatus()));
         holder.txtSite.setText(orderList.get(position).getSiteAddress());
-        holder.txtTime.setText(orderList.get(position).getTimeOrder());
+        if(orderList.get(position).getStatus() == 3){
+            holder.txtTime.setText("Thời gian : " + orderList.get(position).getTimeTaken());
+        }else {
+            holder.txtTime.setText("Thời gian : " + orderList.get(position).getTimeOrder());
+
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

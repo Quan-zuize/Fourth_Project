@@ -149,7 +149,11 @@ public class OrderManagerFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        showUpdateDialog(keys.get(keys.size() - 1 - item.getOrder()), orderList.get(item.getOrder()));
+        if(orderList.get(item.getOrder()).getStatus() == 1){
+            showUpdateDialog(keys.get(keys.size() - 1 - item.getOrder()), orderList.get(item.getOrder()));
+        }else{
+            Toast.makeText(getContext(),"Đơn đã cập nhật.", Toast.LENGTH_SHORT).show();
+        }
         return super.onContextItemSelected(item);
     }
 
@@ -175,7 +179,7 @@ public class OrderManagerFragment extends Fragment {
                 }
                 item.setStatus(status);
                 requests.child(localKey).setValue(item);
-
+                orderAdapter.notifyDataSetChanged();
                 sendOrderStatusToBuyer(item);
             }
         });
