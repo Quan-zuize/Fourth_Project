@@ -244,36 +244,7 @@ public class MenuAddActivity extends AppCompatActivity {
     }
 
     private void addToCombo() {
-        boolean[] checkedItems = new boolean[titleList.size()];
-        for (int i = 0; i < titleList.size(); i++) {
-            checkedItems[i] = false;
-        }
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MenuAddActivity.this);
-        alertDialog.setMultiChoiceItems(titleList.toArray(new String[titleList.size()]), checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                if (b) {
-                    checkedItems[i] = true;
-                    selectedList.add(titleList.get(i));
-                } else {
-                    checkedItems[i] = false;
-                    selectedList.remove(titleList.get(i));
-                }
-            }
-        }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                selected_food.setVisibility(View.VISIBLE);
-                selected_food.setText(selectedList.toString());
-            }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-
-        db.addValueEventListener(new ValueEventListener() {
+         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
@@ -284,6 +255,39 @@ public class MenuAddActivity extends AppCompatActivity {
                         titleList.add(title);
                     }
                 }
+                boolean[] checkedItems = new boolean[titleList.size()];
+                for (int i = 0; i < titleList.size(); i++) {
+                    checkedItems[i] = false;
+                }
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(MenuAddActivity.this);
+                alertDialog.setMultiChoiceItems(titleList.toArray(new String[titleList.size()]), checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                        if (b) {
+                            checkedItems[i] = true;
+                            selectedList.add(titleList.get(i));
+                        } else {
+                            checkedItems[i] = false;
+                            selectedList.remove(titleList.get(i));
+                        }
+                    }
+                }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        selected_food.setVisibility(View.VISIBLE);
+                        selected_food.setText(selectedList.toString());
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+
+                AlertDialog alert = alertDialog.create();
+                alert.setCanceledOnTouchOutside(false);
+                alert.show();
             }
 
             @Override
@@ -291,9 +295,7 @@ public class MenuAddActivity extends AppCompatActivity {
 
             }
         });
-        AlertDialog alert = alertDialog.create();
-        alert.setCanceledOnTouchOutside(false);
-        alert.show();
+
     }
 
     @Override
