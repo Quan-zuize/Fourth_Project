@@ -1,5 +1,6 @@
 package com.example.project_4_admin.Viewholder;
 
+import android.view.ContextMenu;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,4 +20,6 @@ public class OrderDetailsHolder extends RecyclerView.ViewHolder {
         txtQuantity = itemView.findViewById(R.id.textQuantity);
         txtTotal = itemView.findViewById(R.id.textTotal);
     }
+
+
 }

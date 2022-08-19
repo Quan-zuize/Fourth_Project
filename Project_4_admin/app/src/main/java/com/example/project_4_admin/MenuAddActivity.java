@@ -193,7 +193,8 @@ public class MenuAddActivity extends AppCompatActivity {
                                                     db.child(String.valueOf(menu_id)).child("Image").setValue(uri.toString());
                                                     db.child(String.valueOf(menu_id)).child("Date Add").setValue(dtf.format(now));
                                                     Toast.makeText(MenuAddActivity.this, "Upload Successfully!!!", Toast.LENGTH_SHORT).show();
-                                                    startActivity(new Intent(getBaseContext(), MenuListActivity.class));
+                                                    finish();
+                                                    //startActivity(new Intent(getBaseContext(), MenuListActivity.class));
                                                 }
                                             });
                                         }
@@ -220,8 +221,8 @@ public class MenuAddActivity extends AppCompatActivity {
                                                     db.child(String.valueOf(menu_id)).child("Image").setValue(uri.toString());
                                                     db.child(String.valueOf(menu_id)).child("Date Add").setValue(dtf.format(now));
                                                     Toast.makeText(MenuAddActivity.this, "Upload Successfully!!!", Toast.LENGTH_SHORT).show();
-                                                    //finish();
-                                                    startActivity(new Intent(getBaseContext(), MenuListActivity.class));
+                                                    finish();
+                                                    //startActivity(new Intent(getBaseContext(), MenuListActivity.class));
                                                 }
                                             });
                                         }
@@ -241,10 +242,37 @@ public class MenuAddActivity extends AppCompatActivity {
             }
         });
     }
-    private void addTitleList(){
 
-    }
     private void addToCombo() {
+        boolean[] checkedItems = new boolean[titleList.size()];
+        for (int i = 0; i < titleList.size(); i++) {
+            checkedItems[i] = false;
+        }
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MenuAddActivity.this);
+        alertDialog.setMultiChoiceItems(titleList.toArray(new String[titleList.size()]), checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                if (b) {
+                    checkedItems[i] = true;
+                    selectedList.add(titleList.get(i));
+                } else {
+                    checkedItems[i] = false;
+                    selectedList.remove(titleList.get(i));
+                }
+            }
+        }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                selected_food.setVisibility(View.VISIBLE);
+                selected_food.setText(selectedList.toString());
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -256,39 +284,6 @@ public class MenuAddActivity extends AppCompatActivity {
                         titleList.add(title);
                     }
                 }
-                boolean[] checkedItems = new boolean[titleList.size()];
-                for (int i = 0; i < titleList.size(); i++) {
-                    checkedItems[i] = false;
-                }
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(MenuAddActivity.this);
-                alertDialog.setMultiChoiceItems(titleList.toArray(new String[titleList.size()]), checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                        if (b) {
-                            checkedItems[i] = true;
-                            selectedList.add(titleList.get(i));
-                        } else {
-                            checkedItems[i] = false;
-                            selectedList.remove(titleList.get(i));
-                        }
-                    }
-                }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        selected_food.setVisibility(View.VISIBLE);
-                        selected_food.setText(selectedList.toString());
-                    }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                });
-
-
-                AlertDialog alert = alertDialog.create();
-                alert.setCanceledOnTouchOutside(false);
-                alert.show();
             }
 
             @Override
@@ -296,7 +291,9 @@ public class MenuAddActivity extends AppCompatActivity {
 
             }
         });
-
+        AlertDialog alert = alertDialog.create();
+        alert.setCanceledOnTouchOutside(false);
+        alert.show();
     }
 
     @Override

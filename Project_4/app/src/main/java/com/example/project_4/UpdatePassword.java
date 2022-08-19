@@ -37,8 +37,6 @@ public class UpdatePassword extends AppCompatActivity {
     static String SHARED_PREF_NAME = "myPref";
     static String KEY_PASS = "pass";
 
-    String pass;
-
     SharedPreferences.Editor editor;
 
     @Override
@@ -86,6 +84,8 @@ public class UpdatePassword extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
 //                                            Log.d(TAG, "Password updated");
+                                                    editor.putString(KEY_PASS, txtNewPassword.getText().toString());
+                                                    editor.apply();
                                                     Toast.makeText(UpdatePassword.this, "Password updated", Toast.LENGTH_SHORT).show();
                                                     finish();
                                                 } else {

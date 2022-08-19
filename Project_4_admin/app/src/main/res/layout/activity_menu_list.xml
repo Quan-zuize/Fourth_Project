@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/constraintLayoutMenu"
     tools:context=".MenuListActivity">
 
     <TextView
@@ -13,7 +14,7 @@
         android:fontFamily="@font/amita"
         android:text="Category"
         android:textAlignment="center"
-        android:textColor="@color/peach"
+        android:textColor="@color/bgBottomNavigation"
         android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

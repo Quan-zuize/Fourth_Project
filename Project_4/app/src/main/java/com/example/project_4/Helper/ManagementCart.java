@@ -32,6 +32,7 @@ public class ManagementCart {
     public void insertFood(Menu item) {
         ArrayList<Menu> list = getListCart();
         boolean existAlready = false;
+
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getMenu_id() == item.getMenu_id()) {
                 list.get(i).setNumInCart(list.get(i).getNumInCart() + item.getNumInCart());

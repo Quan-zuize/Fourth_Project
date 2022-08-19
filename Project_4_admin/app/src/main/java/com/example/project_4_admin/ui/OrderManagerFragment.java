@@ -84,7 +84,7 @@ public class OrderManagerFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_order_manager, container, false);
 
         //Init service
-        //mService = Common.getFCMService();
+        mService = Common.getFCMService();
 
         //Firebase
         database = FirebaseDatabase.getInstance();

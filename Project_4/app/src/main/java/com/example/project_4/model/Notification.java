@@ -1,13 +1,14 @@
 package com.example.project_4.model;
 
 public class Notification {
-    public String title;
     public String body;
+    public String title;
 
 
-    public Notification(String title,String body) {
-        this.title = title;
+
+    public Notification(String body,String title) {
         this.body = body;
+        this.title = title;
     }
 
     public String getBody() {

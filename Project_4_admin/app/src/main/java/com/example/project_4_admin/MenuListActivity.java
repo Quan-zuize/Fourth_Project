@@ -43,9 +43,7 @@ public class MenuListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_list);
-
-//        mConstraintLayout = findViewById(R.id.constraintLayoutMenu);
-//        mConstraintLayout.setBackgroundResource(R.drawable.bg3);
+        mConstraintLayout = findViewById(R.id.constraintLayoutMenu);
 
         food_recycler = findViewById(R.id.food_recycler);
         txtCat = findViewById(R.id.textCat);
@@ -61,6 +59,31 @@ public class MenuListActivity extends AppCompatActivity {
         if(category != null){
             categoryName = String.join(" ",category);
             txtCat.setText(categoryName);
+            switch (categoryName){
+                case "Cơm":
+                    mConstraintLayout.setBackgroundResource(R.drawable.bg_rice);
+                    break;
+                case "Lẩu":
+                    mConstraintLayout.setBackgroundResource(R.mipmap.bg_hotpot);
+                    break;
+                case "Mì Phở":
+                    mConstraintLayout.setBackgroundResource(R.drawable.bg_noodles);
+                    break;
+                case "Súp":
+                    mConstraintLayout.setBackgroundResource(R.mipmap.bg_soup);
+                    break;
+                case "Tráng miệng":
+                    mConstraintLayout.setBackgroundResource(R.drawable.bg_dessert);
+                    break;
+                case "Ăn nhanh":
+                    mConstraintLayout.setBackgroundResource(R.drawable.bg_fastfood);
+                    break;
+                case "Đồ Uống":
+                    mConstraintLayout.setBackgroundResource(R.drawable.bg_drink);
+                    break;
+                default:
+                    break;
+            }
         }else{
             txtCat.setText("");
         }
