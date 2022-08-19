@@ -1,7 +1,7 @@
 package com.example.project_4_admin.Remote;
 
+import com.example.project_4_admin.model.DataMessage;
 import com.example.project_4_admin.model.MyResponse;
-import com.example.project_4_admin.model.Sender;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -16,5 +16,5 @@ public interface APIService {
             }
     )
     @POST("fcm/send")
-    Call<MyResponse> sendNotification(@Body Sender body);
+    Call<MyResponse> sendNotification(@Body DataMessage body);
 }

@@ -163,7 +163,7 @@ public class StoreFragment extends Fragment {
 
             @Override
             public void onSearchConfirmed(CharSequence text) {
-                String search_text = search.getText().toLowerCase();
+                String search_text = search.getText().trim().toLowerCase();
                 intent.putExtra("search", search_text);
                 startActivity(intent);
             }

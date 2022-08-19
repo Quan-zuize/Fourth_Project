@@ -1,8 +1,15 @@
 package com.example.project_4_admin.Common;
 
 
+import android.text.format.DateFormat;
+
 import com.example.project_4_admin.Remote.APIService;
 import com.example.project_4_admin.Remote.RetrofitClient;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class Common {
     public static String convertCodeToStatus(int status) {
@@ -45,5 +52,13 @@ public class Common {
 
     public static APIService getFCMService(){
         return RetrofitClient.getClient(BASE_URL).create(APIService.class);
+    }
+
+    public static String getDate(long time){
+//        Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+//        calendar.setTimeInMillis(time);
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        return dtf.format(now);
     }
 }

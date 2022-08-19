@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.project_4.MenuListActivity;
 import com.example.project_4.R;
@@ -146,7 +147,7 @@ public class StoreFragment extends Fragment {
 
             @Override
             public void onSearchConfirmed(CharSequence text) {
-                String search_text = search.getText().toLowerCase();
+                String search_text = search.getText().trim().toLowerCase();
                 intent.putExtra("search", search_text);
                 startActivity(intent);
             }

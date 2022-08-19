@@ -12,18 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_4_admin.Common.Common;
-import com.example.project_4_admin.DetailsActivity;
 import com.example.project_4_admin.OrderDetailActivity;
 import com.example.project_4_admin.R;
 import com.example.project_4_admin.Viewholder.OrderViewHolder;
 import com.example.project_4_admin.model.Order;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.LinkedList;
 import java.util.List;
 
 
@@ -50,7 +43,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderViewHolder> {
         holder.txtOrderId.setText("#" + orderList.get(position).getOrderID());
         holder.txtOrderStatus.setText(Common.convertCodeToStatus(orderList.get(position).getStatus()));
         holder.txtPhone.setText(orderList.get(position).getBuyerPhone());
-        holder.txtTime.setText(orderList.get(position).getTimeOrder());
+        holder.txtTimeOrder.setText(orderList.get(position).getTimeOrder());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

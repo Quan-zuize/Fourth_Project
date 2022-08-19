@@ -3,7 +3,6 @@ package com.example.project_4_admin.ui;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,19 +18,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_4_admin.Common.Common;
-import com.example.project_4_admin.Interface.ItemClickListener;
 import com.example.project_4_admin.R;
 import com.example.project_4_admin.Remote.APIService;
-import com.example.project_4_admin.Viewholder.OrderViewHolder;
 import com.example.project_4_admin.adapters.OrderAdapter;
+import com.example.project_4_admin.model.DataMessage;
 import com.example.project_4_admin.model.MyResponse;
-import com.example.project_4_admin.model.Notification;
 import com.example.project_4_admin.model.Order;
 import com.example.project_4_admin.model.OrderDetail;
-import com.example.project_4_admin.model.Sender;
 import com.example.project_4_admin.model.Token;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,8 +35,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -202,10 +196,14 @@ public class OrderManagerFragment extends Fragment {
                             Token token = postSnapShot.getValue(Token.class);
 
                             //Make raw payload
-                            Notification notification = new Notification("Anya Shop", "Đơn của bạn #" + item.getOrderID() + " đã cập nhật : "+spinner.getText().toString());
-                            Sender content = new Sender(token.getToken(), notification);
+//                            Notification notification = new Notification("Anya Shop", "Đơn của bạn #" + item.getOrderID() + " đã cập nhật : "+spinner.getText().toString());
+//                            Sender content = new Sender(token.getToken(), notification);
+                            Map<String,String> dataSend = new HashMap<>();
+                            dataSend.put("title","Anya Shop");
+                            dataSend.put("message","Đơn của bạn #" + item.getOrderID() + " đã cập nhật : "+spinner.getText().toString());
+                            DataMessage dataMessage = new DataMessage(token.getToken(),dataSend);
 
-                            mService.sendNotification(content).enqueue(new Callback<MyResponse>() {
+                            mService.sendNotification(dataMessage).enqueue(new Callback<MyResponse>() {
                                 @Override
                                 public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                                     if (response.body().success == 1) {

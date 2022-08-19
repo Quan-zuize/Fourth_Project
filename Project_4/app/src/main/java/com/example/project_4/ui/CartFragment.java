@@ -27,10 +27,9 @@ import com.example.project_4.R;
 import com.example.project_4.Remote.APIService;
 import com.example.project_4.Store_dashboardActivity;
 import com.example.project_4.adapters.CartAdapter;
+import com.example.project_4.model.DataMessage;
 import com.example.project_4.model.MyResponse;
-import com.example.project_4.model.Notification;
 import com.example.project_4.model.Order;
-import com.example.project_4.model.Sender;
 import com.example.project_4.model.Token;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,12 +41,15 @@ import com.google.firebase.database.ValueEventListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import com.example.project_4.model.Menu;
 import com.example.project_4.model.OrderDetail;
+import com.google.gson.Gson;
 
 import org.angmarch.views.NiceSpinner;
 
@@ -220,10 +222,16 @@ public class CartFragment extends Fragment {
                         Token serverToken = postSnapShot.getValue(Token.class);
 
                         //Create raw value to send
-                        Notification notification = new Notification("Anya Shop","Bạn có đơn đặt mới #"+item.getOrderID());
-                        Sender content = new Sender(serverToken.getToken(),notification);
+//                        Notification notification = new Notification("Anya Shop","Bạn có đơn đặt mới #"+item.getOrderID());
+//                        Sender content = new Sender(serverToken.getToken(),notification);
+                        Map<String,String> dataSend = new HashMap<>();
+                        dataSend.put("title","Anya Shop");
+                        dataSend.put("message","Bạn có đơn đặt mới #"+item.getOrderID());
+                        DataMessage dataMessage = new DataMessage(serverToken.getToken(),dataSend);
 
-                        mService.sendNotification(content).enqueue(new Callback<MyResponse>() {
+                        String test = new Gson().toJson(dataMessage);
+
+                        mService.sendNotification(dataMessage).enqueue(new Callback<MyResponse>() {
                             @Override
                             public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                                 //Only run when get result

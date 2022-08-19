@@ -25,6 +25,7 @@ import java.util.List;
 public class MenuListActivity extends AppCompatActivity {
     private ConstraintLayout mConstraintLayout;
     TextView txtCat;
+    boolean isFound = false;
 
     Menu getMenu;
     String search = null;
@@ -135,11 +136,11 @@ public class MenuListActivity extends AppCompatActivity {
                     for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                         String title = childSnapshot.child("Title").getValue(String.class).toLowerCase();
                         if (title.contains(search)) {
+                            isFound = true;
                             menu_id = Integer.parseInt(childSnapshot.getKey());
                             db.child(String.valueOf(menu_id)).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                                     String title = snapshot.child("Title").getValue(String.class);
                                     String category = snapshot.child("Category").getValue(String.class);
                                     Double price = Double.valueOf(snapshot.child("Price").getValue(String.class));
@@ -157,6 +158,9 @@ public class MenuListActivity extends AppCompatActivity {
                                 }
                             });
                         }
+                    }
+                    if(!isFound){
+                        txtCat.setText("Không tìm thấy món "+search);
                     }
                 }
 
