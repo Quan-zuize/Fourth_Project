@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +64,7 @@ public class ProfileManagerFragment extends Fragment {
     TextInputEditText phone_edit_text;
     String name, email, phone, site, siteName = "";
 
+    RelativeLayout buttonContainer;
     DatabaseReference databaseReference;
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
@@ -92,6 +94,8 @@ public class ProfileManagerFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_profile_manager, container, false);
+
+        buttonContainer = root.findViewById(R.id.buttonContainer);
 
         sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -208,12 +212,10 @@ public class ProfileManagerFragment extends Fragment {
         String phone = sharedPreferences.getString(KEY_PHONE, null);
         String email = sharedPreferences.getString(KEY_EMAIL, null);
         if (phone == null || email == null) {
-            btn_login.setVisibility(View.VISIBLE);
-            btn_signup.setVisibility(View.VISIBLE);
+            buttonContainer.setVisibility(View.VISIBLE);
             update_container.setVisibility(View.GONE);
         } else {
-            btn_login.setVisibility(View.GONE);
-            btn_signup.setVisibility(View.GONE);
+            buttonContainer.setVisibility(View.GONE);
             update_container.setVisibility(View.VISIBLE);
         }
     }
