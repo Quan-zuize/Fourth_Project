@@ -110,6 +110,7 @@ public class OrderManagerFragment extends Fragment {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             keys.add(snapshot.getKey());
+                            listDetails.clear();
                             order_id = Integer.parseInt(snapshot.child("orderID").getValue().toString());
                             buyer_id = snapshot.child("buyerId").getValue(String.class);
                             buyer_name = snapshot.child("buyerName").getValue(String.class);
@@ -149,8 +150,8 @@ public class OrderManagerFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        if(orderList.get(item.getOrder()).getStatus() == 1){
-            showUpdateDialog(keys.get(keys.size() - 1 - item.getOrder()), orderList.get(item.getOrder()));
+        if(orderList.get(item.getOrder()).getStatus() == 1 || orderList.get(item.getOrder()).getStatus() == 2){
+            showUpdateDialog(keys.get(keys.size() + 1 - orderList.get(item.getOrder()).getOrderID()), orderList.get(item.getOrder()));
         }else{
             Toast.makeText(getContext(),"Đơn đã cập nhật.", Toast.LENGTH_SHORT).show();
         }
@@ -179,7 +180,6 @@ public class OrderManagerFragment extends Fragment {
                 }
                 item.setStatus(status);
                 requests.child(localKey).setValue(item);
-                orderAdapter.notifyDataSetChanged();
                 sendOrderStatusToBuyer(item);
             }
         });

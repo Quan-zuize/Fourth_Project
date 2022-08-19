@@ -148,6 +148,7 @@ public class CartFragment extends Fragment {
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                listDetails.clear();
                 //insert to firebase
                 //id last order +1
                 order_id = max_id + 1;

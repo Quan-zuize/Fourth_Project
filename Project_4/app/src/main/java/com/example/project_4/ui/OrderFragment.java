@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.project_4.R;
 import com.example.project_4.Viewholder.OrderViewHolder;
@@ -152,4 +154,14 @@ public class OrderFragment extends Fragment {
             }
         });
     }
+
+//    @Override
+//    public boolean onContextItemSelected(@NonNull MenuItem item) {
+//        if(orderList.get(item.getOrder()).getStatus() == 1){
+//            showUpdateDialog(keys.get(keys.size() - 1 - item.getOrder()), orderList.get(item.getOrder()));
+//        }else{
+//            Toast.makeText(getContext(),"Đơn đã cập nhật.", Toast.LENGTH_SHORT).show();
+//        }
+//        return super.onContextItemSelected(item);
+//    }
 }

@@ -56,9 +56,10 @@ public class ResetPasswordActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(ResetPasswordActivity.this, "check your email to reset your password!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ResetPasswordActivity.this, "Check your email to reset your password !", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(ResetPasswordActivity.this, LoginActivity.class));
                 }else{
-                    Toast.makeText(ResetPasswordActivity.this, "Log in Error :" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ResetPasswordActivity.this, "Error :" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

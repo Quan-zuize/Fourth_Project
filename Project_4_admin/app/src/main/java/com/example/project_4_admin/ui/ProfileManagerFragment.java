@@ -189,7 +189,7 @@ public class ProfileManagerFragment extends Fragment {
                             String date = childSnapshot.child("timeOrder").getValue(String.class);
                             dateTime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
                             for (int i = 0; i < 7; i++) {
-                                if (LocalDate.now().minusDays(i).equals(dateTime.toLocalDate())) {
+                                if (LocalDate.now().minusDays(i).equals(dateTime.toLocalDate()) && childSnapshot.child("status").getValue(Integer.class) == 3)  {
                                     money[i] = Float.valueOf(childSnapshot.child("total").getValue(Long.class));
                                     totalMoney[i] += money[i];
                                 }

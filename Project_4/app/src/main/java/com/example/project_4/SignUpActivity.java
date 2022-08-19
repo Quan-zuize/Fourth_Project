@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -84,7 +85,7 @@ public class SignUpActivity extends AppCompatActivity {
         } else if (phone.length() != 10) {
             this.phone.setError("Phone length 10 !");
             this.phone.requestFocus();
-        }else if(!r.matcher(this.phone.getText().toString().trim()).find()){
+        } else if (!r.matcher(this.phone.getText().toString().trim()).find()) {
             this.phone.setError("Phone not match");
             this.phone.requestFocus();
         } else if (pass.isEmpty()) {
@@ -99,46 +100,25 @@ public class SignUpActivity extends AppCompatActivity {
         } else if (!conPass.equals(pass)) {
             this.conPassword.setError("Password Are Not Matching !");
             this.conPassword.requestFocus();
-        }else {
-            databaseReference.child("Users").addValueEventListener(new ValueEventListener() {
+        } else {
+            auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    boolean isDublicatePhone = false;
-                    for (DataSnapshot singleSnapshot : snapshot.getChildren()) {
-                        if (((HashMap) singleSnapshot.getValue()).get("phone").equals(phone)) {
-                            isDublicatePhone = true;
-                        }
-                    }
-                    if (!isDublicatePhone) {
-                        auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(SignUpActivity.this, "User Registered Successfully ", Toast.LENGTH_SHORT).show();
-                                    //insert to db
-                                    User userObject = new User(fullname, email, phone);
-                                    firebaseUser = auth.getCurrentUser();
-                                    databaseReference.child("Users").child(firebaseUser.getUid()).setValue(userObject);
-                                    startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
-                                } else {
-                                    Toast.makeText(SignUpActivity.this, "Registered Error :" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
-                    } else {
-                        Toast.makeText(SignUpActivity.this, "Your phone is already exist", Toast.LENGTH_LONG).show();
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(SignUpActivity.this, "User Registered Successfully ", Toast.LENGTH_LONG).show();
+                        //insert to db
+                        User userObject = new User(fullname, email, phone);
+                        firebaseUser = auth.getCurrentUser();
+                        databaseReference.child("Users").child(firebaseUser.getUid()).setValue(userObject);
+                        startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                     }
                 }
-
+            }).addOnFailureListener(new OnFailureListener() {
                 @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(SignUpActivity.this, "Registered Error :" + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
-
-
         }
-
     }
 }
