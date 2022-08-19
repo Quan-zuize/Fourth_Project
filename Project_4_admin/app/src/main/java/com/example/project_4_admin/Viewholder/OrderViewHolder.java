@@ -1,5 +1,6 @@
 package com.example.project_4_admin.Viewholder;
 
+import android.view.ContextMenu;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -10,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.project_4_admin.Interface.ItemClickListener;
 import com.example.project_4_admin.R;
 
-public class OrderViewHolder extends RecyclerView.ViewHolder {
+public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener, View.OnCreateContextMenuListener{
     public TextView txtOrderId, txtOrderStatus,txtPhone, txtTime;
 
 
@@ -21,5 +22,19 @@ public class OrderViewHolder extends RecyclerView.ViewHolder {
         txtOrderStatus = itemView.findViewById(R.id.order_status);
         txtPhone = itemView.findViewById(R.id.order_phone);
         txtTime = itemView.findViewById(R.id.order_time);
+
+        itemView.setOnCreateContextMenuListener(this);
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        return false;
+    }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+        contextMenu.setHeaderTitle("Select Action");
+        contextMenu.add(0,0,getAdapterPosition(),"UPDATE");
     }
 }

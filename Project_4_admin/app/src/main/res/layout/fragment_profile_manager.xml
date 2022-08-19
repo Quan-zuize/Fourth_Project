@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.ProfileManagerFragment">
+    tools:context=".ui.ProfileFragment">
     <RelativeLayout
         android:id="@+id/buttonContainer"
         android:layout_width="match_parent"
@@ -33,7 +33,6 @@
             android:backgroundTint="@color/colorPrimary"
             android:text="@string/action_sign_in_short" />
     </RelativeLayout>
-
     <LinearLayout
         android:id="@+id/profile_container"
         android:layout_width="match_parent"
@@ -87,10 +86,6 @@
                 android:text="@string/hint_phone"
                 android:focusedByDefault="false"/>
         </com.google.android.material.textfield.TextInputLayout>
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/incomeChart"
-            android:layout_width="match_parent"
-            android:layout_height="280dp"/>
         <Button
             android:id="@+id/UpdateBtn"
             android:layout_width="match_parent"

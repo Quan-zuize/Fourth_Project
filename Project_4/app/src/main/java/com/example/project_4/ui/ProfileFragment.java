@@ -1,12 +1,16 @@
 package com.example.project_4.ui;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +24,11 @@ import com.example.project_4.R;
 import com.example.project_4.SignUpActivity;
 import com.example.project_4.Store_dashboardActivity;
 import com.example.project_4.UpdatePassword;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -48,6 +56,7 @@ public class ProfileFragment extends Fragment {
     static String KEY_EMAIL = "email";
     static String KEY_NAME = "name";
     static String KEY_PHONE = "phone";
+    static String KEY_PASS = "pass";
     SharedPreferences.Editor editor;
 
     @Override
@@ -153,6 +162,7 @@ public class ProfileFragment extends Fragment {
                 email_edit_text.requestFocus();
                 return false;
             } else {
+                reAuthenticate();
                 databaseReference.child(firebaseUser.getUid()).child("email").setValue(email_edit_text.getText().toString());
                 email = email_edit_text.getText().toString();
                 editor.putString(KEY_EMAIL, email);
@@ -197,5 +207,36 @@ public class ProfileFragment extends Fragment {
             btn_signup.setVisibility(View.GONE);
             update_container.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void reAuthenticate() {
+        String strNewEmail = email_edit_text.getText().toString().trim();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(email, sharedPreferences.getString(KEY_PASS, null));
+
+// Prompt the user to re-provide their sign-in credentials
+        user.reauthenticate(credential)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            user.updateEmail(strNewEmail)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(getActivity(), "User email address updated", Toast.LENGTH_SHORT).show();
+                                                //mMainActivity.showUserInformation();
+                                            } else {
+
+                                            }
+                                        }
+                                    });
+                        } else {
+                            Log.d(TAG, "Error auth failed");
+                        }
+                    }
+                });
     }
 }
