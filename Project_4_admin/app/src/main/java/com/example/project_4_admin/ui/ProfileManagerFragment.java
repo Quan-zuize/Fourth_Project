@@ -196,7 +196,7 @@ public class ProfileManagerFragment extends Fragment {
 
                                 chartData.add(new BarEntry(i, totalMoney[i]));
 
-                                barDataSet = new BarDataSet(chartData, "Overview of " + siteName);
+                                barDataSet = new BarDataSet(chartData, "Doanh thu " + siteName);
                                 //incomeChart.animateY(1000);
                                 barData = new BarData(barDataSet);
                                 barDataSet.setDrawValues(true);
@@ -268,7 +268,7 @@ public class ProfileManagerFragment extends Fragment {
         rightAxis.setDrawLabels(false);
         Legend legend = incomeChart.getLegend();
         //setting the shape of the legend form to line, default square shape
-        legend.setForm(Legend.LegendForm.LINE);
+        legend.setForm(Legend.LegendForm.SQUARE);
         //setting the text size of the legend
         legend.setTextSize(11f);
         //setting the alignment of legend toward the chart
@@ -279,5 +279,4 @@ public class ProfileManagerFragment extends Fragment {
         //setting the location of legend outside the chart, default false if not set
         legend.setDrawInside(false);
 
-    }
-}
+    }}

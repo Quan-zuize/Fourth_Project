@@ -58,19 +58,17 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MenuAddActivity.class);
                 startActivity(intent);
+
             }
         });
 
-        getMenuFromDB();
-        return root;
-    }
-    public void getMenuFromDB(){
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                menuList.clear();
+
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                     menu_id = Integer.parseInt(childSnapshot.getKey());
+                    menuList.clear();
                     db.child(String.valueOf(menu_id)).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -98,5 +96,9 @@ public class MenuFragment extends Fragment {
 
             }
         });
+        return root;
+    }
+    public void getMenuFromDB(){
+
     }
 }

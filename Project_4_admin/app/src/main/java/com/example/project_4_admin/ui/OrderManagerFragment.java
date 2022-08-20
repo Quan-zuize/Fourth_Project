@@ -151,7 +151,7 @@ public class OrderManagerFragment extends Fragment {
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         if(orderList.get(item.getOrder()).getStatus() == 1 || orderList.get(item.getOrder()).getStatus() == 2){
-            showUpdateDialog(keys.get(keys.size() + 1 - orderList.get(item.getOrder()).getOrderID()), orderList.get(item.getOrder()));
+            showUpdateDialog(keys.get(keys.size() - 1 - item.getOrder()), orderList.get(item.getOrder()));
         }else{
             Toast.makeText(getContext(),"Đơn đã cập nhật.", Toast.LENGTH_SHORT).show();
         }
